@@ -1,21 +1,28 @@
-// This function will be triggered when the user clicks the login button
+// Login function
 function login() {
-    // Retrieve username and password values from the input fields
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    // For testing purposes, let's use hardcoded credentials (for example)
+    // For demo purposes, hardcoded credentials
     const validUsername = "user";
     const validPassword = "password123";
 
-    // If credentials match, display a success message
     if (username === validUsername && password === validPassword) {
         alert("Login Successful!");
-        // Optionally, you could redirect to another page after successful login
-        window.location.href = "roller.html"; // This would redirect to roller page (if needed)
+        window.location.href = "roller.html";
     } else {
-        // If credentials are incorrect, display an error message
         alert("Invalid Username or Password!");
     }
 }
 
+// Sign up function
+function signup() {
+    const username = document.getElementById('newUsername').value;
+    const password = document.getElementById('newPassword').value;
+
+    // Save these values for future login (you could use localStorage here)
+    localStorage.setItem("username", username);
+    localStorage.setItem("password", password);
+    alert("Sign Up Successful!");
+    window.location.href = "login.html";
+}
