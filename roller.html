@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roller - Apple Points</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS -->
+    <title>Apple Points Roller</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Apple Points Roller</h1>
-    
-    <p id="apple-points">Loading...</p> <!-- Shows Apple Points -->
+    <h1>Apple Points Roller 🎰</h1>
+    <p id="apple-points">Apple Points: 10</p>
 
-    <div id="slot-machine">🎰🎰🎰</div> <!-- Rolling Animation -->
+    <!-- Slot Machine Display -->
+    <div id="slot-machine">Press Spin to Start</div>
+    <button id="spin-button">🎰 Spin!</button>
+    <p id="result-message"></p>
 
-    <p id="result-message"></p> <!-- Show result here -->
+    <!-- Logout Button -->
+    <button id="logout-button">Logout</button>
 
-    <button id="spin-button">🎰 Spin</button> <!-- Spin Button -->
-    <button id="logout-button">🚪 Logout</button> <!-- Logout Button -->
+    <!-- 🎵 Audio Files -->
+    <audio id="lose-sound" src="sounds/ahh.mp3"></audio>
+    <audio id="win-sound" src="sounds/yay.mp3"></audio>
+    <audio id="ok-sound" src="sounds/ok.mp3"></audio>
+    <audio id="roll-sound" src="sounds/roll.mp3"></audio>
 
-    <audio id="lose-sound" src="sounds/ahh.mp3"></audio> <!-- Ahh Sound -->
-    <audio id="win-sound" src="sounds/yay.mp3"></audio> <!-- Yay Sound -->
-
-    <script src="js/roller.js"></script> <!-- Handles Spinning & Points -->
-    <script src="js/logout.js"></script> <!-- Handles Logout -->
+    <!-- JavaScript -->
+    <script src="js/roller.js"></script>
+    <script src="js/logout.js"></script>
 </body>
 </html>
