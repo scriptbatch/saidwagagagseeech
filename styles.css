@@ -1,0 +1,52 @@
+body {
+    background: linear-gradient(to bottom, black, darkred);
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 40px;
+    margin-top: 20px;
+    text-shadow: 3px 3px 10px rgba(255, 0, 0, 0.7);
+}
+
+#apple-points {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#slot-machine {
+    font-size: 30px;
+    font-weight: bold;
+    background: gold;
+    color: black;
+    padding: 20px;
+    width: 300px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 15px gold;
+}
+
+button {
+    font-size: 20px;
+    padding: 15px 30px;
+    margin: 10px;
+    background: darkred;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+}
+
+button:hover {
+    background: red;
+}
+
+#result-message {
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: bold;
+}
