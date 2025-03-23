@@ -25,9 +25,16 @@ if (!users[username]) {
 
 let applePoints = users[username].applePoints;
 
+// Get elements
+const applePointsDisplay = document.getElementById("apple-points");
+const resultMessage = document.getElementById("result-message");
+const slotMachine = document.getElementById("slot-machine");
+const loseSound = document.getElementById("lose-sound");
+const winSound = document.getElementById("win-sound");
+
 // Update Apple Points Display
 function updateApplePoints() {
-    document.getElementById("apple-points").innerText = `Apple Points: ${applePoints}`;
+    applePointsDisplay.innerText = `Apple Points: ${applePoints}`;
 }
 
 // Set initial Apple Points display
@@ -38,34 +45,49 @@ document.getElementById("spin-button").addEventListener("click", function () {
     if (applePoints > 0) {
         applePoints--; // Deduct 1 point for spinning
         
-        // Random chance for rewards
-        let chance = Math.random(); // Generates a number between 0 and 1
-        let winnings = 0;
+        // Rolling animation
+        slotMachine.innerText = "🔄🔄🔄"; // Show spinning effect
+        resultMessage.innerText = "Spinning... 🎰";
+        
+        setTimeout(() => {
+            // Random chance for rewards
+            let chance = Math.random(); // Generates a number between 0 and 1
+            let winnings = 0;
 
-        if (chance < 0.05) {
-            winnings = 5; // Jackpot (5%)
-        } else if (chance < 0.15) {
-            winnings = 3; // Small Bonus (10%)
-        } else if (chance < 0.35) {
-            winnings = 1; // Normal Win (20%)
-        } else {
-            winnings = 0; // Most Common Outcome (65%)
-        }
+            if (chance < 0.05) {
+                winnings = 5; // Jackpot (5%)
+                slotMachine.innerText = "🎉🎉🎉"; // Jackpot Animation
+                resultMessage.innerText = "JACKPOT! 🎉 You won 5 Apple Points!";
+                winSound.play(); // Play "Yay" Sound
+            } else if (chance < 0.15) {
+                winnings = 3; // Small Bonus (10%)
+                slotMachine.innerText = "🍏🍏🍏"; // Apple Points Animation
+                resultMessage.innerText = "You won 3 Apple Points!";
+            } else if (chance < 0.35) {
+                winnings = 1; // Normal Win (20%)
+                slotMachine.innerText = "🍏🔄🔄"; 
+                resultMessage.innerText = "You won 1 Apple Point!";
+            } else {
+                winnings = 0; // Most Common Outcome (65%)
+                slotMachine.innerText = "❌❌❌"; // Losing Animation
+                resultMessage.innerText = "You won 0 Apple Points... 😭";
+                loseSound.play(); // Play "Ahh" Sound
+            }
 
-        applePoints += winnings;
+            applePoints += winnings;
 
-        // Prevent the user from going broke
-        if (applePoints <= 0) {
-            applePoints = 1; // Give them 1 free Apple Point
-            alert("You went broke! Here’s 1 free Apple Point to keep playing.");
-        }
+            // Prevent the user from going broke
+            if (applePoints <= 0) {
+                applePoints = 1; // Give them 1 free Apple Point
+                resultMessage.innerText = "You went broke! Here’s 1 free Apple Point to keep playing.";
+            }
 
-        // Update user data
-        users[username].applePoints = applePoints;
-        localStorage.setItem("users", JSON.stringify(users));
+            // Update user data
+            users[username].applePoints = applePoints;
+            localStorage.setItem("users", JSON.stringify(users));
 
-        // Update UI
-        updateApplePoints();
-        alert(`You won ${winnings} Apple Points!`);
+            // Update UI
+            updateApplePoints();
+        }, 2000); // Delay to simulate rolling effect
     }
 });
