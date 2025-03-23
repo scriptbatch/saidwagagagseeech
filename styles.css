@@ -1,67 +1,39 @@
-/* Global Reset */
-* {
-    box-sizing: border-box;
+/* Basic styling for the pages */
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* Background: Smooth Dark Red Casino Theme */
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(to bottom, black, darkred);
-    color: white;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+h1 {
+    margin-top: 20px;
+    font-size: 2em;
 }
 
-/* Main Container */
-.container {
-    max-width: 400px;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px red;
-}
-
-/* Roller Box */
-.roller-box {
-    width: 100%;
-    height: 80px;
-    margin: 20px auto;
-    overflow: hidden;
-    border: 2px solid red;
-    border-radius: 8px;
-    background: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Roller Animation */
-.roller {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
-
-/* Buttons */
-.btn {
-    display: block;
-    width: 100%;
+input {
+    margin: 10px;
     padding: 10px;
-    margin: 10px 0;
-    background: red;
+    font-size: 1em;
+}
+
+button {
+    margin: 10px;
+    padding: 15px 20px;
+    background-color: red;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 18px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-.btn:hover {
-    background: darkred;
+button:hover {
+    background-color: darkred;
 }
+
+p {
+    font-size: 1.5em;
+}
+
+#points {
+    font-weight: bold;
+}
+
