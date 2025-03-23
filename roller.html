@@ -7,25 +7,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Apple Points Roller 🎰</h1>
-    <p id="apple-points">Apple Points: 10</p>
+    <div class="container">
+        <h1>🍏 Apple Points Roller 🎰</h1>
+        <p>Your Apple Points: <span id="applePoints">10</span></p>
 
-    <!-- Slot Machine Display -->
-    <div id="slot-machine">Press Spin to Start</div>
-    <button id="spin-button">🎰 Spin!</button>
-    <p id="result-message"></p>
+        <div class="roller-box">
+            <div class="roller" id="rollingText">Press Roll to Spin!</div>
+        </div>
 
-    <!-- Logout Button -->
-    <button id="logout-button">Logout</button>
+        <button id="rollButton" class="btn">🎲 Roll (Costs 1 Apple Point)</button>
 
-    <!-- 🎵 Audio Files -->
-    <audio id="lose-sound" src="sounds/ahh.mp3"></audio>
-    <audio id="win-sound" src="sounds/yay.mp3"></audio>
-    <audio id="ok-sound" src="sounds/ok.mp3"></audio>
-    <audio id="roll-sound" src="sounds/roll.mp3"></audio>
+        <p id="resultMessage"></p>
 
-    <!-- JavaScript -->
+        <a href="index.html" class="btn">🏠 Home</a>
+    </div>
+
+    <audio id="rollingSound" src="js/roll.mp3"></audio>
+    <audio id="okSound" src="js/ok.mp3"></audio>
+    <audio id="yaySound" src="js/yay.mp3"></audio>
+
     <script src="js/roller.js"></script>
-    <script src="js/logout.js"></script>
 </body>
 </html>
