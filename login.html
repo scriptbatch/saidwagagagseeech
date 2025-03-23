@@ -3,19 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Login</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        input, button {
+            font-size: 16px;
+            margin: 10px;
+            padding: 8px;
+        }
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔐 Log In</h1>
-        <input type="text" id="loginUsername" placeholder="Enter Username">
-        <input type="password" id="loginPassword" placeholder="Enter Password">
-        <button onclick="login()" class="btn">Log In</button>
-        <p id="loginMessage"></p> <!-- ✅ Shows messages here -->
-        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
-        <a href="index.html" class="btn">🏠 Home</a>
-    </div>
-    <script src="js/auth.js"></script>
+    <h2>Login</h2>
+    <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter password" required><br>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+    <script src="auth.js"></script>
 </body>
 </html>
