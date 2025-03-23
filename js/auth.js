@@ -1,64 +1,53 @@
-// Helper function to set a cookie
-function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        let date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
+// Check if user is logged in, if not send them to login page
+function checkAuth() {
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html";
     }
-    document.cookie = name + "=" + value + expires + "; path=/";
 }
 
-// Helper function to get a cookie
-function getCookie(name) {
-    let nameEQ = name + "=";
-    let ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === " ") c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+// Signup function
+function signUp() {
+    let username = document.getElementById("signupUsername").value;
+    let password = document.getElementById("signupPassword").value;
+
+    if (!username || !password) {
+        alert("❌ Please fill in all fields!");
+        return;
     }
-    return null;
-}
 
-// Check if user is already logged in
-if (getCookie("loggedInUser")) {
-    window.location.href = "roller.html"; // Redirect to roller page
-}
-
-// Function to handle sign up
-document.getElementById("signup-form")?.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    let username = document.getElementById("signup-username").value;
-    let password = document.getElementById("signup-password").value;
-
-    let users = JSON.parse(localStorage.getItem("users")) || {}; // Get stored users
-
+    // Save user in localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    
     if (users[username]) {
-        alert("Username already exists! Choose another one.");
-    } else {
-        users[username] = { password: password, applePoints: 10 }; // Default 10 Apple Points
-        localStorage.setItem("users", JSON.stringify(users)); // Save updated users
-        setCookie("loggedInUser", username, 7); // Keep user logged in for 7 days
-        window.location.href = "roller.html"; // Redirect to roller
+        alert("❌ Username already exists!");
+        return;
     }
-});
 
-// Function to handle login
-document.getElementById("login-form")?.addEventListener("submit", function (e) {
-    e.preventDefault();
+    users[username] = password;
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    alert("✅ Signup successful! Please log in.");
+    window.location.href = "login.html";
+}
 
-    let username = document.getElementById("login-username").value;
-    let password = document.getElementById("login-password").value;
+// Login function
+function login() {
+    let username = document.getElementById("loginUsername").value;
+    let password = document.getElementById("loginPassword").value;
 
-    let users = JSON.parse(localStorage.getItem("users")) || {}; // Get stored users
+    let users = JSON.parse(localStorage.getItem("users")) || {};
 
-    if (users[username] && users[username].password === password) {
-        setCookie("loggedInUser", username, 7); // Keep user logged in for 7 days
+    if (users[username] && users[username] === password) {
+        localStorage.setItem("loggedInUser", username);
+        alert("✅ Login successful!");
         window.location.href = "roller.html"; // Redirect to roller
     } else {
-        alert("Invalid username or password!");
+        alert("❌ Invalid username or password!");
     }
-});
+}
 
+// Logout function
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "index.html";
+}
