@@ -1,39 +1,23 @@
-/* Basic styling for the pages */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    margin-top: 20px;
-    font-size: 2em;
-}
-
-input {
-    margin: 10px;
-    padding: 10px;
-    font-size: 1em;
 }
 
 button {
-    margin: 10px;
-    padding: 15px 20px;
     background-color: red;
     color: white;
+    padding: 10px 20px;
     border: none;
     cursor: pointer;
+    font-size: 16px;
 }
 
 button:hover {
     background-color: darkred;
 }
 
-p {
-    font-size: 1.5em;
-}
-
-#points {
-    font-weight: bold;
+input {
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
 }
 
