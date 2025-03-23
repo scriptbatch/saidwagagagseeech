@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(to bottom, black, darkred);
+    background: radial-gradient(circle, darkred 20%, black 80%);
     color: white;
     text-align: center;
     font-family: Arial, sans-serif;
@@ -39,6 +39,7 @@ button {
     cursor: pointer;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    transition: background 0.3s ease-in-out;
 }
 
 button:hover {
