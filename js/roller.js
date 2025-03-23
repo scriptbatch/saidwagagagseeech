@@ -31,10 +31,10 @@ const slotMachine = document.getElementById("slot-machine");
 const spinButton = document.getElementById("spin-button");
 
 // Audio Elements
-const loseSound = document.getElementById("lose-sound");
-const winSound = document.getElementById("win-sound");
-const okSound = document.getElementById("ok-sound");
-const rollSound = document.getElementById("roll-sound");
+const loseSound = document.getElementById("lose-sound"); // ahh.mp3
+const winSound = document.getElementById("win-sound"); // yay.mp3
+const okSound = document.getElementById("ok-sound"); // ok.mp3
+const rollSound = document.getElementById("roll-sound"); // roll.mp3
 
 // Update Apple Points Display
 function updateApplePoints() {
@@ -72,9 +72,10 @@ spinButton.addEventListener("click", function () {
         applePoints--; // Deduct 1 point for spinning
         updateApplePoints();
 
-        // Restart rolling sound from the beginning
+        // Restart rolling sound from the beginning & force it to play for 4 seconds
         rollSound.currentTime = 0;
         rollSound.play();
+        setTimeout(() => rollSound.pause(), 4000); // Stop sound after 4 sec
 
         // Fake rolling text animation
         let rollingTexts = ["1 Apple Point", "0 Apple Points", "🎉 JACKPOT! 5 Apple Points 🎉", "3 Apple Points"];
@@ -97,30 +98,24 @@ spinButton.addEventListener("click", function () {
             resultMessage.innerText = `You won ${prize.text}!`;
 
             applePoints += prize.value;
+            updateApplePoints();
 
-            // Play Sounds
+            // Play Sounds Based on Result
             if (prize.value === 0) {
                 loseSound.play(); // "Ahh" sound when losing
-            } else if (prize.value === 1) {
-                okSound.play(); // "OK" sound when winning 1 Apple Point
+            } else if (prize.value === 1 || prize.value === 3) {
+                okSound.play(); // "OK" sound for winning 1 or 3 Apple Points
             } else if (prize.value === 5) {
                 winSound.play(); // "Yay" sound for jackpot
             }
 
-            // Prevent player from going broke
-            if (applePoints <= 0) {
-                applePoints = 1;
-                resultMessage.innerText = "You went broke! Here’s 1 free Apple Point to keep playing.";
-            }
-
-            // Update user data
+            // Save new apple points to localStorage
             users[username].applePoints = applePoints;
             localStorage.setItem("users", JSON.stringify(users));
 
-            // Update UI
-            updateApplePoints();
-        }, 3000); // 3 seconds of rolling animation
+        }, 4000); // Delay for 4 sec (same as roll.mp3)
     } else {
-        resultMessage.innerText = "Not enough Apple Points to spin!";
+        resultMessage.innerText = "Not enough Apple Points!";
     }
 });
+
