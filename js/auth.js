@@ -1,42 +1,21 @@
-// Sign Up function
-function signUp() {
-    const username = document.getElementById("signupUsername").value;
-    const password = document.getElementById("signupPassword").value;
-    
-    if (username === "" || password === "") {
-        alert("Please fill in both fields!");
-        return;
-    }
-
-    // Store the user's data in localStorage
-    if (localStorage.getItem(username)) {
-        alert("Username already taken. Please choose a different one.");
-    } else {
-        localStorage.setItem(username, password);
-        alert("Account created successfully!");
-        window.location.href = "login.html";  // Redirect to login page
-    }
-}
-
-// Login function
+// This function will be triggered when the user clicks the login button
 function login() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    // Retrieve username and password values from the input fields
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-    if (username === "" || password === "") {
-        alert("Please fill in both fields!");
-        return;
-    }
+    // For testing purposes, let's use hardcoded credentials (for example)
+    const validUsername = "user";
+    const validPassword = "password123";
 
-    const storedPassword = localStorage.getItem(username);
-
-    if (!storedPassword) {
-        alert("Account not found!");
-    } else if (storedPassword !== password) {
-        alert("Invalid password!");
+    // If credentials match, display a success message
+    if (username === validUsername && password === validPassword) {
+        alert("Login Successful!");
+        // Optionally, you could redirect to another page after successful login
+        window.location.href = "roller.html"; // This would redirect to roller page (if needed)
     } else {
-        alert("Login successful!");
-        window.location.href = "roller.html";  // Redirect to roller game page
+        // If credentials are incorrect, display an error message
+        alert("Invalid Username or Password!");
     }
 }
 
