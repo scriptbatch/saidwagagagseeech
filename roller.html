@@ -28,17 +28,32 @@
         let applePoints = 10;
         document.getElementById('points').innerText = `Apple Points: ${applePoints}`;
 
-        // Roll function
+        // Function to simulate rolling for apple points
         function rollForPoints() {
-            const roll = Math.random();
+            // First, lose 1 apple point when the user clicks "Roll"
+            if (applePoints > 0) {
+                applePoints -= 1; // Deduct 1 apple point
+            } else {
+                alert("You don't have enough apple points to roll!");
+                return; // Stop the function if the user doesn't have points left
+            }
 
+            // Now, simulate the roll to win 0, 1, or 5 points
+            const roll = Math.random(); // Generates a random number between 0 and 1
             let pointsWon = 0;
-            if (roll < 0.60) pointsWon = 0;
-            else if (roll < 0.90) pointsWon = 1;
-            else if (roll < 0.99) pointsWon = 3;
-            else pointsWon = 5;
 
+            if (roll < 0.60) {
+                pointsWon = 0;  // 60% chance to get 0 apple points
+            } else if (roll < 0.90) {
+                pointsWon = 1;  // 30% chance to get 1 apple point
+            } else if (roll < 0.99) {
+                pointsWon = 5;  // 10% chance to get 5 apple points
+            }
+
+            // Add the points won from the roll
             applePoints += pointsWon;
+
+            // Update the display of apple points
             document.getElementById('points').innerText = `Apple Points: ${applePoints}`;
         }
 
@@ -47,3 +62,4 @@
     </script>
 </body>
 </html>
+
