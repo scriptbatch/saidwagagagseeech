@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css"> <!-- Make sure your CSS is correctly linked -->
 </head>
-<body style="background-color: black; color: white; text-align: center;">
-
+<body>
     <h1>Login</h1>
 
+    <!-- Input fields for username and password -->
     <input type="text" id="username" placeholder="Enter Username" required>
     <input type="password" id="password" placeholder="Enter Password" required>
+
+    <!-- Login button -->
     <button onclick="login()">Login</button>
 
+    <!-- Linking to the external auth.js file -->
     <script src="js/auth.js"></script>
-
 </body>
 </html>
