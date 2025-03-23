@@ -1,30 +1,42 @@
-function login() {
-    let usernameInput = document.getElementById("username");
-    let passwordInput = document.getElementById("password");
-
-    // Ensure inputs exist
-    if (!usernameInput || !passwordInput) {
-        console.error("Login fields not found! Check your HTML IDs.");
-        return;
-    }
-
-    let username = usernameInput.value.trim();
-    let password = passwordInput.value.trim();
-
+// Sign Up function
+function signUp() {
+    const username = document.getElementById("signupUsername").value;
+    const password = document.getElementById("signupPassword").value;
+    
     if (username === "" || password === "") {
-        alert("Please enter both username and password!");
+        alert("Please fill in both fields!");
         return;
     }
 
-    let savedPassword = localStorage.getItem(username);  // Get password from localStorage
-
-    if (!savedPassword) {
-        alert("Account not found!");
-    } else if (savedPassword !== password) {
-        alert("Invalid password!");
+    // Store the user's data in localStorage
+    if (localStorage.getItem(username)) {
+        alert("Username already taken. Please choose a different one.");
     } else {
-        localStorage.setItem("loggedInUser", username);  // Set user as logged in
-        alert("Login successful!");
-        window.location.href = "roller.html";  // Redirect to roller page after login
+        localStorage.setItem(username, password);
+        alert("Account created successfully!");
+        window.location.href = "login.html";  // Redirect to login page
     }
 }
+
+// Login function
+function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    if (username === "" || password === "") {
+        alert("Please fill in both fields!");
+        return;
+    }
+
+    const storedPassword = localStorage.getItem(username);
+
+    if (!storedPassword) {
+        alert("Account not found!");
+    } else if (storedPassword !== password) {
+        alert("Invalid password!");
+    } else {
+        alert("Login successful!");
+        window.location.href = "roller.html";  // Redirect to roller game page
+    }
+}
+
