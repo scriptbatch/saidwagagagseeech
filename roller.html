@@ -3,42 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roller Game</title>
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        button {
-            font-size: 20px;
-            background-color: red;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: darkred;
-        }
-        .result {
-            font-size: 24px;
-            margin-top: 20px;
-        }
-        #applePoints {
-            font-size: 32px;
-        }
-    </style>
+    <title>Roller</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-    <h2>Welcome to the Roller Game!</h2>
-    <p>Click the button to roll for apple points.</p>
-    <p id="applePoints">Apple Points: 10</p> <!-- Start with 10 apple points -->
+<body style="background-color: black; color: white; text-align: center;">
 
-    <button onclick="roll()">Roll</button>
-    <div class="result" id="result"></div>
-    
-    <script src="roller.js"></script>
+    <h1>Apple Points Roller</h1>
+    <p id="points">Apple Points: 10</p>
+
+    <button onclick="spin()">Roll for Points</button>
+
+    <!-- Sound elements -->
+    <audio id="rollSound" src="sounds/roll.mp3"></audio>
+    <audio id="yaySound" src="sounds/yay.mp3"></audio>
+    <audio id="okSound" src="sounds/ok.mp3"></audio>
+    <audio id="ahhSound" src="sounds/ahh.mp3"></audio>
+
+    <script src="js/roller.js"></script>
+
 </body>
 </html>
+
