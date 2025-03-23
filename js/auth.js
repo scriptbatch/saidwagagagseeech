@@ -1,65 +1,68 @@
-// Set cookie for login (store username in cookie)
-function setCookie(name, value, days) {
-    const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));  // Cookie expires in X days
-    document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+// Function to create a cookie
+function createCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));  // Days to milliseconds
+        expires = "; expires=" + date.toGMTString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
-// Get cookie value by name
+// Function to get a cookie by name
 function getCookie(name) {
-    const nameEq = name + "=";
-    const ca = document.cookie.split(';');
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);  // Trim the space
-        if (c.indexOf(nameEq) == 0) return c.substring(nameEq.length, c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
-    return null;  // Return null if cookie is not found
+    return null;
 }
 
-// In auth.js file
+// Function to delete a cookie by name
+function deleteCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+}
+
+// Signup function
 function signup() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    // Perform the signup action here (e.g., storing in localStorage or sending data to a server)
-    alert("Signed up successfully!");
-    // You can redirect or display success messages after successful signup
-    window.location.href = "login.html";  // Redirect to login page
+    // Validation: Make sure username and password are not empty
+    if (username === "" || password === "") {
+        alert("Username and Password cannot be empty!");
+        return;  // Stop the function if fields are empty
+    }
+
+    // Create cookies for username and password, set expiration to 7 days
+    createCookie('username', username, 7);
+    createCookie('password', password, 7);
+
+    // Show success message
+    alert('Signup Successful! You can now login.');
+
+    // Redirect to login page after successful signup
+    window.location.href = "login.html"; // Change this to redirect to your login page
 }
 
-
-// Login function
+// Login function (for the login.html page)
 function login() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const validUsername = "user";    // Expected username
-    const validPassword = "password123";  // Expected password
+    // Get saved username and password from cookies
+    const savedUsername = getCookie('username');
+    const savedPassword = getCookie('password');
 
-    if (username === validUsername && password === validPassword) {
-        // Set cookie for the user
-        setCookie("username", username, 7);  // Cookie expires in 7 days
+    // Check if the entered username and password match the saved values
+    if (username === savedUsername && password === savedPassword) {
         alert("Login Successful!");
-        window.location.href = "roller.html";  // Redirect to the roller page after successful login
+        // Redirect to another page after login (e.g., the main page)
+        window.location.href = "roller.html"; // Change to your main page or another desired page
     } else {
-        alert("Invalid Username or Password!");  // Alert for incorrect login
+        alert("Invalid username or password!");
     }
-}
-
-// Check if the user is already logged in
-function checkLogin() {
-    const username = getCookie("username");
-    if (username) {
-        document.getElementById("login-status").innerText = `Welcome, ${username}!`;
-    } else {
-        document.getElementById("login-status").innerText = "Not logged in";
-    }
-}
-
-// Logout function (to clear the cookie)
-function logout() {
-    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";  // Delete the cookie
-    alert("You have been logged out.");
-    window.location.href = "login.html";  // Redirect to login page after logout
 }
