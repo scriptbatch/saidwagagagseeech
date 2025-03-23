@@ -44,7 +44,7 @@ function updateApplePoints() {
 // Set initial Apple Points display
 updateApplePoints();
 
-// Prize Distribution
+// Prize Distribution (Fixed)
 const prizes = [
     { text: "0 Apple Points", value: 0, chance: 0.60 }, // 60%
     { text: "1 Apple Point", value: 1, chance: 0.25 },  // 25%
@@ -72,16 +72,17 @@ spinButton.addEventListener("click", function () {
         applePoints--; // Deduct 1 point for spinning
         updateApplePoints();
 
-        // Restart rolling sound from the beginning & force it to play for 4 seconds
+        // Play rolling sound (force it to stop after 4 seconds)
         rollSound.currentTime = 0;
         rollSound.play();
-        setTimeout(() => rollSound.pause(), 4000); // Stop sound after 4 sec
+        setTimeout(() => rollSound.pause(), 4000);
 
         // Fake rolling text animation
         let rollingTexts = ["1 Apple Point", "0 Apple Points", "🎉 JACKPOT! 5 Apple Points 🎉", "3 Apple Points"];
         let rollIndex = 0;
 
         resultMessage.innerText = "Spinning... 🎰";
+        slotMachine.style.minHeight = "50px"; // Prevents page jumping
         slotMachine.innerText = rollingTexts[rollIndex];
 
         let rollInterval = setInterval(() => {
@@ -94,6 +95,12 @@ spinButton.addEventListener("click", function () {
 
             // Get actual prize
             let prize = getRandomPrize();
+
+            // **🔧 FIX: If broke, guarantee at least 1 Apple Point**
+            if (applePoints === 0 && prize.value === 0) {
+                prize = { text: "1 Apple Point (Safety Net)", value: 1 }; // Always give 1 point
+            }
+
             slotMachine.innerText = prize.text;
             resultMessage.innerText = `You won ${prize.text}!`;
 
@@ -118,4 +125,3 @@ spinButton.addEventListener("click", function () {
         resultMessage.innerText = "Not enough Apple Points!";
     }
 });
-
