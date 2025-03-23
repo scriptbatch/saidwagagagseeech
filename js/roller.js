@@ -1,50 +1,50 @@
-document.getElementById("rollButton").addEventListener("click", function () {
-    // Play rolling sound
-    let rollSound = new Audio("sounds/roll.mp3");
-    rollSound.play().catch(error => console.log("Autoplay blocked:", error));
+// Load sounds
+let rollSound = new Audio("sounds/roll.mp3");
+let okSound = new Audio("sounds/ok.mp3");
+let yaySound = new Audio("sounds/yay.mp3");
+let ahhSound = new Audio("sounds/ahh.mp3");
 
-    // Disable button while rolling
-    let rollButton = document.getElementById("rollButton");
-    rollButton.disabled = true;
-
-    // Rolling animation duration (4 seconds to match roll.mp3)
-    setTimeout(() => {
-        let result = roll();
-        let applePoints = parseInt(localStorage.getItem("applePoints") || "10");
-
-        if (applePoints > 0) {
-            applePoints--; // Deduct spin cost
-
-            if (result === 1 || result === 3) {
-                applePoints += result;
-                let okSound = new Audio("sounds/ok.mp3");
-                okSound.play();
-            } else if (result === 5) {
-                applePoints += result;
-                let yaySound = new Audio("sounds/yay.mp3");
-                yaySound.play();
-            }
-
-            localStorage.setItem("applePoints", applePoints);
-            document.getElementById("applePoints").innerText = applePoints;
-        }
-
-        // Re-enable button after rolling
-        rollButton.disabled = false;
-    }, 4000); // Wait for roll.mp3 to finish before showing result
-});
-
-// Function to determine the roll result
-function roll() {
-    let chance = Math.random();
-    if (chance < 0.60) return 0; // 60% chance to get nothing
-    if (chance < 0.85) return 1; // 25% chance to get 1 apple point
-    if (chance < 0.95) return 3; // 10% chance to get 3 apple points
-    return 5; // 5% chance for jackpot
+// Function to play sound safely
+function playSound(sound) {
+    sound.currentTime = 0; // Reset to start
+    sound.play().catch(error => console.log("Autoplay blocked:", error));
 }
 
-// Load Apple Points on page load
-document.addEventListener("DOMContentLoaded", function () {
-    let applePoints = parseInt(localStorage.getItem("applePoints") || "10");
+// Modify your spin function
+function spin() {
+    if (applePoints < 1) {
+        alert("Not enough Apple Points!");
+        return;
+    }
+
+    playSound(rollSound); // Play roll sound when spinning starts
+
+    applePoints -= 1;
+    updateApplePoints();
+
+    let result;
+    let chance = Math.random();
+    
+    if (chance < 0.6) result = 0;       // 60% chance for 0 (lose)
+    else if (chance < 0.85) result = 1; // 25% chance for 1
+    else if (chance < 0.95) result = 3; // 10% chance for 3
+    else result = 5;                    // 5% chance for jackpot
+
+    // Wait for roll animation before revealing result
+    setTimeout(() => {
+        alert(`You won ${result} apple points!`);
+
+        if (result === 0) playSound(ahhSound);     // Loss sound
+        else if (result === 1 || result === 3) playSound(okSound); // Small win
+        else if (result === 5) playSound(yaySound); // Jackpot
+       
+        applePoints += result;
+        updateApplePoints();
+    }, 4000); // Delay matches the roll.mp3 (4 sec)
+}
+
+// Function to update Apple Points on screen and save them
+function updateApplePoints() {
     document.getElementById("applePoints").innerText = applePoints;
-});
+    setCookie("applePoints", applePoints, 7);
+}
