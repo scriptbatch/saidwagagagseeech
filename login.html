@@ -1,22 +1,36 @@
-<!DOCTYPE html>
+<!-- login.html -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/styles.css"> <!-- Make sure your CSS is correctly linked -->
 </head>
 <body>
     <h1>Login</h1>
+    <form id="login-form">
+        <input type="text" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+    </form>
 
-    <!-- Input fields for username and password -->
-    <input type="text" id="username" placeholder="Enter Username" required>
-    <input type="password" id="password" placeholder="Enter Password" required>
+    <script>
+        // Function to handle login
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent the form from submitting normally
 
-    <!-- Login button -->
-    <button onclick="login()">Login</button>
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-    <!-- Linking to the external auth.js file -->
-    <script src="js/auth.js"></script>
+            // For simplicity, assume login is successful if both fields are non-empty
+            if (email && password) {
+                // Create a cookie to store the session for 30 days
+                document.cookie = `user=${email}; max-age=${30 * 24 * 60 * 60}; path=/`;
+
+                // Redirect to roller.html after login
+                window.location.href = 'roller.html';
+            } else {
+                alert("Please enter valid credentials.");
+            }
+        });
+    </script>
 </body>
 </html>
