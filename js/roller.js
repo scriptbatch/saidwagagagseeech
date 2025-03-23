@@ -31,6 +31,8 @@ const resultMessage = document.getElementById("result-message");
 const slotMachine = document.getElementById("slot-machine");
 const loseSound = document.getElementById("lose-sound");
 const winSound = document.getElementById("win-sound");
+const okSound = document.getElementById("ok-sound");
+const rollSound = document.getElementById("roll-sound");
 
 // Update Apple Points Display
 function updateApplePoints() {
@@ -40,45 +42,71 @@ function updateApplePoints() {
 // Set initial Apple Points display
 updateApplePoints();
 
+// Prize Distribution
+const prizes = [
+    { text: "0 Apple Points", value: 0, chance: 0.60 }, // 60%
+    { text: "1 Apple Point", value: 1, chance: 0.25 },  // 25%
+    { text: "3 Apple Points", value: 3, chance: 0.14 }, // 14%
+    { text: "🎉 JACKPOT! 5 Apple Points 🎉", value: 5, chance: 0.01 } // 1%
+];
+
+// Function to pick a prize based on probability
+function getRandomPrize() {
+    let random = Math.random();
+    let cumulative = 0;
+
+    for (let prize of prizes) {
+        cumulative += prize.chance;
+        if (random <= cumulative) {
+            return prize;
+        }
+    }
+    return prizes[0]; // Default to 0 Apple Points (should never happen)
+}
+
 // Spin Button Logic
 document.getElementById("spin-button").addEventListener("click", function () {
     if (applePoints > 0) {
         applePoints--; // Deduct 1 point for spinning
+        updateApplePoints();
         
-        // Rolling animation
-        slotMachine.innerText = "🔄🔄🔄"; // Show spinning effect
-        resultMessage.innerText = "Spinning... 🎰";
-        
-        setTimeout(() => {
-            // Random chance for rewards
-            let chance = Math.random(); // Generates a number between 0 and 1
-            let winnings = 0;
+        // Play rolling sound 🎰
+        rollSound.play();
 
-            if (chance < 0.05) {
-                winnings = 5; // Jackpot (5%)
-                slotMachine.innerText = "🎉🎉🎉"; // Jackpot Animation
-                resultMessage.innerText = "JACKPOT! 🎉 You won 5 Apple Points!";
-                winSound.play(); // Play "Yay" Sound
-            } else if (chance < 0.15) {
-                winnings = 3; // Small Bonus (10%)
-                slotMachine.innerText = "🍏🍏🍏"; // Apple Points Animation
-                resultMessage.innerText = "You won 3 Apple Points!";
-            } else if (chance < 0.35) {
-                winnings = 1; // Normal Win (20%)
-                slotMachine.innerText = "🍏🔄🔄"; 
-                resultMessage.innerText = "You won 1 Apple Point!";
-            } else {
-                winnings = 0; // Most Common Outcome (65%)
-                slotMachine.innerText = "❌❌❌"; // Losing Animation
-                resultMessage.innerText = "You won 0 Apple Points... 😭";
-                loseSound.play(); // Play "Ahh" Sound
+        // Fake rolling text
+        let rollingTexts = ["1 Apple Point", "0 Apple Points", "🎉 JACKPOT! 5 Apple Points 🎉", "3 Apple Points"];
+        let rollIndex = 0;
+
+        resultMessage.innerText = "Spinning... 🎰";
+        slotMachine.innerText = rollingTexts[rollIndex];
+
+        let rollInterval = setInterval(() => {
+            rollIndex = (rollIndex + 1) % rollingTexts.length;
+            slotMachine.innerText = rollingTexts[rollIndex];
+        }, 100); // Fast cycle animation
+
+        setTimeout(() => {
+            clearInterval(rollInterval); // Stop the rolling animation
+
+            // Get actual prize
+            let prize = getRandomPrize();
+            slotMachine.innerText = prize.text;
+            resultMessage.innerText = `You won ${prize.text}!`;
+
+            applePoints += prize.value;
+
+            // Play Sounds
+            if (prize.value === 0) {
+                loseSound.play(); // "Ahh" sound when losing
+            } else if (prize.value === 1) {
+                okSound.play(); // "OK" sound when winning 1 Apple Point
+            } else if (prize.value === 5) {
+                winSound.play(); // "Yay" sound for jackpot
             }
 
-            applePoints += winnings;
-
-            // Prevent the user from going broke
+            // Prevent player from going broke
             if (applePoints <= 0) {
-                applePoints = 1; // Give them 1 free Apple Point
+                applePoints = 1;
                 resultMessage.innerText = "You went broke! Here’s 1 free Apple Point to keep playing.";
             }
 
@@ -88,6 +116,6 @@ document.getElementById("spin-button").addEventListener("click", function () {
 
             // Update UI
             updateApplePoints();
-        }, 2000); // Delay to simulate rolling effect
+        }, 3000); // 3 seconds of rolling animation
     }
 });
