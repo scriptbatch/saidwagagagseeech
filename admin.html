@@ -4,33 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="css/styles.css"> <!-- Link to styles -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Admin Panel</h1>
+    <div class="container">
+        <h1>🔑 Admin Panel</h1>
+        <p>Enter Admin Password:</p>
+        <input type="password" id="adminPassword">
+        <button onclick="checkAdmin()" class="btn">Login</button>
 
-    <!-- Login Form -->
-    <div id="login-section">
-        <h2>Admin Login</h2>
-        <input type="text" id="admin-username" placeholder="Username">
-        <input type="password" id="admin-password" placeholder="Password">
-        <button onclick="adminLogin()">Login</button>
-        <p id="login-error" style="color: red;"></p>
+        <div id="adminSection" style="display: none;">
+            <h2>Give Apple Points</h2>
+            <input type="text" id="username" placeholder="Enter Username">
+            <input type="number" id="points" placeholder="Amount">
+            <button onclick="givePoints()" class="btn">Give Points</button>
+            <p id="adminMessage"></p>
+        </div>
+
+        <a href="index.html" class="btn">🏠 Home</a>
     </div>
 
-    <!-- Admin Control Panel (Hidden by Default) -->
-    <div id="admin-panel" style="display: none;">
-        <h2>Give Apple Points</h2>
-        <label for="user-select">Select User:</label>
-        <input type="text" id="user-select" placeholder="Enter Username">
-        
-        <label for="points-amount">Apple Points:</label>
-        <input type="number" id="points-amount" min="1">
-        
-        <button onclick="giveApplePoints()">Give Points</button>
-        <p id="admin-message" style="color: green;"></p>
-    </div>
-
-    <script src="js/admin.js"></script> <!-- Link to Admin JS -->
+    <script src="js/admin.js"></script>
 </body>
 </html>
