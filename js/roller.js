@@ -15,9 +15,8 @@ if (!username) {
     window.location.href = "login.html"; // Redirect if not logged in
 }
 
+// Get user data from localStorage
 let users = JSON.parse(localStorage.getItem("users")) || {};
-
-// Ensure user has an account
 if (!users[username]) {
     users[username] = { password: "", applePoints: 10 }; // Default 10 Apple Points
     localStorage.setItem("users", JSON.stringify(users));
@@ -29,6 +28,9 @@ let applePoints = users[username].applePoints;
 const applePointsDisplay = document.getElementById("apple-points");
 const resultMessage = document.getElementById("result-message");
 const slotMachine = document.getElementById("slot-machine");
+const spinButton = document.getElementById("spin-button");
+
+// Audio Elements
 const loseSound = document.getElementById("lose-sound");
 const winSound = document.getElementById("win-sound");
 const okSound = document.getElementById("ok-sound");
@@ -61,11 +63,11 @@ function getRandomPrize() {
             return prize;
         }
     }
-    return prizes[0]; // Default to 0 Apple Points (should never happen)
+    return prizes[0]; // Default to 0 Apple Points
 }
 
 // Spin Button Logic
-document.getElementById("spin-button").addEventListener("click", function () {
+spinButton.addEventListener("click", function () {
     if (applePoints > 0) {
         applePoints--; // Deduct 1 point for spinning
         updateApplePoints();
@@ -73,7 +75,7 @@ document.getElementById("spin-button").addEventListener("click", function () {
         // Play rolling sound 🎰
         rollSound.play();
 
-        // Fake rolling text
+        // Fake rolling text animation
         let rollingTexts = ["1 Apple Point", "0 Apple Points", "🎉 JACKPOT! 5 Apple Points 🎉", "3 Apple Points"];
         let rollIndex = 0;
 
@@ -117,5 +119,7 @@ document.getElementById("spin-button").addEventListener("click", function () {
             // Update UI
             updateApplePoints();
         }, 3000); // 3 seconds of rolling animation
+    } else {
+        resultMessage.innerText = "Not enough Apple Points to spin!";
     }
 });
