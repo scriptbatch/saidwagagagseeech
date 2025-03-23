@@ -1,66 +1,50 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let user = localStorage.getItem("loggedInUser");
-    if (!user) {
-        window.location.href = "login.html"; // Redirect if not logged in
-    }
+document.getElementById("rollButton").addEventListener("click", function () {
+    // Play rolling sound
+    let rollSound = new Audio("sounds/roll.mp3");
+    rollSound.play().catch(error => console.log("Autoplay blocked:", error));
 
-    let applePoints = parseInt(localStorage.getItem(`applePoints_${user}`)) || 10;
-    document.getElementById("applePoints").innerText = applePoints;
+    // Disable button while rolling
+    let rollButton = document.getElementById("rollButton");
+    rollButton.disabled = true;
 
-    const rollButton = document.getElementById("rollButton");
-    const rollingText = document.getElementById("rollingText");
-    const resultMessage = document.getElementById("resultMessage");
+    // Rolling animation duration (4 seconds to match roll.mp3)
+    setTimeout(() => {
+        let result = roll();
+        let applePoints = parseInt(localStorage.getItem("applePoints") || "10");
 
-    // Sounds
-    const rollingSound = document.getElementById("rollingSound");
-    const okSound = document.getElementById("okSound");
-    const yaySound = document.getElementById("yaySound");
+        if (applePoints > 0) {
+            applePoints--; // Deduct spin cost
 
-    rollButton.addEventListener("click", function () {
-        if (applePoints < 1) {
-            resultMessage.innerText = "❌ Not enough Apple Points!";
-            return;
-        }
-
-        applePoints--; // Deduct 1 Apple Point
-        document.getElementById("applePoints").innerText = applePoints;
-        localStorage.setItem(`applePoints_${user}`, applePoints);
-
-        rollingSound.play();
-
-        const results = ["0 Apple Points", "1 Apple Point", "JACKPOT (5 Apple Points)", "3 Apple Points"];
-        let count = 0;
-
-        const interval = setInterval(() => {
-            rollingText.innerText = results[Math.floor(Math.random() * results.length)];
-            count++;
-            if (count > 10) {
-                clearInterval(interval);
-                finishRoll();
-            }
-        }, 300);
-
-        function finishRoll() {
-            let random = Math.random();
-            let wonPoints = 0;
-
-            if (random < 0.6) {
-                wonPoints = 0;
-            } else if (random < 0.85) {
-                wonPoints = 1;
+            if (result === 1 || result === 3) {
+                applePoints += result;
+                let okSound = new Audio("sounds/ok.mp3");
                 okSound.play();
-            } else if (random < 0.95) {
-                wonPoints = 3;
-                okSound.play();
-            } else {
-                wonPoints = 5;
+            } else if (result === 5) {
+                applePoints += result;
+                let yaySound = new Audio("sounds/yay.mp3");
                 yaySound.play();
             }
 
-            applePoints += wonPoints;
+            localStorage.setItem("applePoints", applePoints);
             document.getElementById("applePoints").innerText = applePoints;
-            rollingText.innerText = `🎉 You won ${wonPoints} Apple Points!`;
-            localStorage.setItem(`applePoints_${user}`, applePoints);
         }
-    });
+
+        // Re-enable button after rolling
+        rollButton.disabled = false;
+    }, 4000); // Wait for roll.mp3 to finish before showing result
+});
+
+// Function to determine the roll result
+function roll() {
+    let chance = Math.random();
+    if (chance < 0.60) return 0; // 60% chance to get nothing
+    if (chance < 0.85) return 1; // 25% chance to get 1 apple point
+    if (chance < 0.95) return 3; // 10% chance to get 3 apple points
+    return 5; // 5% chance for jackpot
+}
+
+// Load Apple Points on page load
+document.addEventListener("DOMContentLoaded", function () {
+    let applePoints = parseInt(localStorage.getItem("applePoints") || "10");
+    document.getElementById("applePoints").innerText = applePoints;
 });
