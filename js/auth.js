@@ -17,6 +17,18 @@ function getCookie(name) {
     return null;  // Return null if cookie is not found
 }
 
+// In auth.js file
+function signup() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Perform the signup action here (e.g., storing in localStorage or sending data to a server)
+    alert("Signed up successfully!");
+    // You can redirect or display success messages after successful signup
+    window.location.href = "login.html";  // Redirect to login page
+}
+
+
 // Login function
 function login() {
     const username = document.getElementById('username').value;
