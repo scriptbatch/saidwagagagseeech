@@ -8,19 +8,19 @@
 </head>
 <body style="background-color: black; color: white; text-align: center;">
 
-    <h1>Apple Points Roller</h1>
-    <p id="points">Apple Points: 10</p>
+    <h1>Welcome to the Roller Page!</h1>
 
-    <button onclick="spin()">Roll for Points</button>
+    <p id="login-status">Checking login status...</p>
 
-    <!-- Sound elements -->
-    <audio id="rollSound" src="sounds/roll.mp3"></audio>
-    <audio id="yaySound" src="sounds/yay.mp3"></audio>
-    <audio id="okSound" src="sounds/ok.mp3"></audio>
-    <audio id="ahhSound" src="sounds/ahh.mp3"></audio>
+    <button onclick="logout()">Logout</button>
 
-    <script src="js/roller.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check login status when the page loads
+        window.onload = function() {
+            checkLogin();  // Check if the user is logged in
+        }
+    </script>
 
 </body>
 </html>
-
