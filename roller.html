@@ -6,7 +6,7 @@
     <title>Apple Points Roller</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body onload="checkAuth()">
     <div class="container">
         <h1>🍏 Apple Points Roller 🎰</h1>
         <p>Your Apple Points: <span id="applePoints">10</span></p>
@@ -16,16 +16,16 @@
         </div>
 
         <button id="rollButton" class="btn">🎲 Roll (Costs 1 Apple Point)</button>
-
         <p id="resultMessage"></p>
 
-        <a href="index.html" class="btn">🏠 Home</a>
+        <button onclick="logout()" class="btn">🚪 Logout</button>
     </div>
 
     <audio id="rollingSound" src="js/roll.mp3"></audio>
     <audio id="okSound" src="js/ok.mp3"></audio>
     <audio id="yaySound" src="js/yay.mp3"></audio>
 
+    <script src="js/auth.js"></script>
     <script src="js/roller.js"></script>
 </body>
 </html>
