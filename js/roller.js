@@ -71,8 +71,9 @@ spinButton.addEventListener("click", function () {
     if (applePoints > 0) {
         applePoints--; // Deduct 1 point for spinning
         updateApplePoints();
-        
-        // Play rolling sound 🎰
+
+        // Restart rolling sound from the beginning
+        rollSound.currentTime = 0;
         rollSound.play();
 
         // Fake rolling text animation
