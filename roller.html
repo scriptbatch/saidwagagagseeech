@@ -2,12 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roller Game</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ffcc00;
+            margin-bottom: 20px;
+        }
+
+        #points {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 5px;
+        }
+
+        /* Style for the button */
+        #roll-btn {
+            font-size: 1.2em;
+            padding: 15px 30px;
+            background-color: #ffcc00;
+            color: #222;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #roll-btn:hover {
+            background-color: #ffaa00;
+        }
+
+        /* Spinning Animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Animation for the spinning effect */
+        .spinning {
+            animation: spin 1s ease-out;
+        }
+
+        /* Custom style for the alert box */
+        .alert {
+            background-color: #ff4747;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 1.2em;
+            color: white;
+        }
+
+        /* The Casino Look */
+        .casino-container {
+            background: linear-gradient(135deg, #a5a5a5, #7a7a7a);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Roller Game</h1>
-    <div id="points">Apple Points: 10</div>
-    <button id="roll-btn">Roll</button>
+    <div class="casino-container">
+        <h1>Casino Roller Game</h1>
+        <div id="points">Apple Points: 10</div>
+        <button id="roll-btn">Spin the Wheel!</button>
+        <div id="alert-message"></div>
+    </div>
 
     <script>
         // Function to get a cookie value by name
@@ -34,9 +113,16 @@
             if (applePoints > 0) {
                 applePoints -= 1; // Deduct 1 apple point
             } else {
-                alert("You don't have enough apple points to roll!");
+                showAlert("You don't have enough apple points to roll!");
                 return; // Stop the function if the user doesn't have points left
             }
+
+            // Add the spinning animation to the button
+            const rollButton = document.getElementById('roll-btn');
+            rollButton.classList.add('spinning');
+            setTimeout(() => {
+                rollButton.classList.remove('spinning');
+            }, 1000); // Remove spinning effect after 1 second
 
             // Now, simulate the roll to win 0, 1, or 5 points
             const roll = Math.random(); // Generates a random number between 0 and 1
@@ -55,6 +141,18 @@
 
             // Update the display of apple points
             document.getElementById('points').innerText = `Apple Points: ${applePoints}`;
+        }
+
+        // Show alert messages
+        function showAlert(message) {
+            const alertBox = document.getElementById('alert-message');
+            alertBox.innerText = message;
+            alertBox.classList.add('alert');
+
+            setTimeout(() => {
+                alertBox.innerText = '';
+                alertBox.classList.remove('alert');
+            }, 3000); // Alert disappears after 3 seconds
         }
 
         // Add event listener to roll button
