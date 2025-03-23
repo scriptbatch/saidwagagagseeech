@@ -3,29 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Points Roller</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Roller Game</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        button {
+            font-size: 20px;
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        #applePoints {
+            font-size: 32px;
+        }
+    </style>
 </head>
-<body onload="checkAuth()">
-    <div class="container">
-        <h1>🍏 Apple Points Roller 🎰</h1>
-        <p>Your Apple Points: <span id="applePoints">10</span></p>
+<body>
+    <h2>Welcome to the Roller Game!</h2>
+    <p>Click the button to roll for apple points.</p>
+    <p id="applePoints">Apple Points: 10</p> <!-- Start with 10 apple points -->
 
-        <div class="roller-box">
-            <div class="roller" id="rollingText">Press Roll to Spin!</div>
-        </div>
-
-        <button id="rollButton" class="btn">🎲 Roll (Costs 1 Apple Point)</button>
-        <p id="resultMessage"></p>
-
-        <button onclick="logout()" class="btn">🚪 Logout</button>
-    </div>
-
-    <audio id="rollingSound" src="js/roll.mp3"></audio>
-    <audio id="okSound" src="js/ok.mp3"></audio>
-    <audio id="yaySound" src="js/yay.mp3"></audio>
-
-    <script src="js/auth.js"></script>
-    <script src="js/roller.js"></script>
+    <button onclick="roll()">Roll</button>
+    <div class="result" id="result"></div>
+    
+    <script src="roller.js"></script>
 </body>
 </html>
