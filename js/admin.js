@@ -1,6 +1,6 @@
 // Dummy Admin Credentials
 const ADMIN_USERNAME = "salamiowner";
-const ADMIN_PASSWORD = "admin123";  // Change this to a secure password!
+const ADMIN_PASSWORD = "SlaMMi13#@*SALSa)(";  // Updated secure password
 
 // Check if admin is already logged in
 if (localStorage.getItem("adminLoggedIn") === "true") {
