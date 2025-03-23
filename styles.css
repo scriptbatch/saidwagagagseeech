@@ -1,85 +1,59 @@
-/* General Reset */
-* {
+/* Fullscreen Casino Feel */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(black, darkred);
+    color: white;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: "Arial", sans-serif;
 }
 
-/* Body - Casino Look */
-body {
-    background: linear-gradient(45deg, black, darkred);
-    color: white;
-    text-align: center;
+/* Main Roller Container */
+.roller-container {
+    margin-top: 50px;
+}
+
+/* Rolling Text Box */
+.roller {
+    width: 300px;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid red;
+    border-radius: 10px;
+    margin: 20px auto;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    font-size: 24px;
+    font-weight: bold;
     overflow: hidden;
 }
 
-/* Apple Points Display */
-#apple-points {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+/* Button Styling */
+.btn {
     display: inline-block;
-}
-
-/* Slot Machine Box */
-#slot-machine {
-    font-size: 32px;
-    font-weight: bold;
-    background: gold;
-    color: black;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    margin-bottom: 20px;
-    transition: transform 0.2s ease-in-out;
-}
-
-/* Spin Button */
-#spin-button {
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px 20px;
-    background: red;
+    padding: 12px 24px;
+    margin: 10px;
+    background-color: red;
     color: white;
-    border: 3px solid gold;
-    border-radius: 10px;
-    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
     transition: 0.3s;
+    border: none;
+    cursor: pointer;
 }
 
-#spin-button:hover {
-    background: gold;
-    color: black;
+.btn:hover {
+    background-color: darkred;
 }
 
-/* Result Message */
-#result-message {
-    font-size: 20px;
-    margin-top: 20px;
-    padding: 10px;
-    font-weight: bold;
+/* Back Button */
+.back-btn {
+    background-color: gray;
 }
 
-/* Spin Animation */
-.spinning {
-    animation: spinEffect 0.2s infinite linear;
-}
-
-@keyframes spinEffect {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+.back-btn:hover {
+    background-color: darkgray;
 }
 
