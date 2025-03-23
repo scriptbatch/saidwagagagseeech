@@ -15,14 +15,14 @@ function login() {
         return;
     }
 
-    let savedPassword = getCookie(username);
-    
+    let savedPassword = localStorage.getItem(username);
+
     if (!savedPassword) {
         alert("Account not found!");
     } else if (savedPassword !== password) {
         alert("Invalid password!");
     } else {
-        setCookie("loggedInUser", username, 7); // Save login for 7 days
+        localStorage.setItem("loggedInUser", username); // Save login in localStorage
         alert("Login successful!");
         window.location.href = "roller.html"; // Redirect after login
     }
