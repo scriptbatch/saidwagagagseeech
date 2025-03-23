@@ -1,63 +1,50 @@
-// Check if user is logged in, if not, send them to login page
-function checkAuth() {
-    if (!localStorage.getItem("loggedInUser")) {
-        window.location.href = "login.html";
-    }
-}
-
-// Display messages on the page
-function showMessage(id, message) {
-    document.getElementById(id).innerText = message;
-}
-
-// Signup function
-function signUp() {
-    let username = document.getElementById("signupUsername").value.trim();
-    let password = document.getElementById("signupPassword").value.trim();
-    let messageBox = document.getElementById("signupMessage");
-
-    if (!username || !password) {
-        showMessage("signupMessage", "❌ Please fill in all fields!");
-        return;
-    }
-
-    let users = JSON.parse(localStorage.getItem("users")) || {};
-    
-    if (users[username]) {
-        showMessage("signupMessage", "❌ Username already exists!");
-        return;
-    }
-
-    users[username] = password;
-    localStorage.setItem("users", JSON.stringify(users));
-    
-    showMessage("signupMessage", "✅ Signup successful! Redirecting to login...");
-    setTimeout(() => {
-        window.location.href = "login.html";
-    }, 1500);
-}
-
-// Login function
 function login() {
-    let username = document.getElementById("loginUsername").value.trim();
-    let password = document.getElementById("loginPassword").value.trim();
-    let messageBox = document.getElementById("loginMessage");
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-    let users = JSON.parse(localStorage.getItem("users")) || {};
-
-    if (users[username] && users[username] === password) {
-        localStorage.setItem("loggedInUser", username);
-        showMessage("loginMessage", "✅ Login successful! Redirecting...");
-        setTimeout(() => {
-            window.location.href = "roller.html";
-        }, 1500);
-    } else {
-        showMessage("loginMessage", "❌ Invalid username or password!");
+    // Check if it's the admin account
+    if (username === "salamiowner" && password === "SlaMMi13#@*SALSa)(") {
+        setCookie("loggedInUser", username, 7); // Store for 7 days
+        window.location.href = "admin.html"; // Redirect to admin panel
+        return;
     }
+
+    // Check if user exists in cookies
+    let storedPassword = getCookie(username);
+    if (!storedPassword) {
+        alert("User does not exist!");
+        return;
+    }
+
+    if (password !== storedPassword) {
+        alert("Invalid password!");
+        return;
+    }
+
+    // Store login session
+    setCookie("loggedInUser", username, 7); // Keep user logged in for 7 days
+    window.location.href = "roller.html"; // Redirect to roller page
 }
 
-// Logout function
-function logout() {
-    localStorage.removeItem("loggedInUser");
-    window.location.href = "index.html";
+// Function to set a cookie
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
 }
+
+// Function to get a cookie
+function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
