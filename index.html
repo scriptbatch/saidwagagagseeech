@@ -1,88 +1,115 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const rollButton = document.getElementById("rollButton");
-    const applePointsText = document.getElementById("applePointsText");
-    const rollSound = document.getElementById("roll-sound");
-    const yaySound = document.getElementById("yay-sound");
-    const loseSound = document.getElementById("lose-sound");
-    const okSound = document.getElementById("ok-sound");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Points Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    // Get cookie data or initialize if not present
-    let applePoints = getCookie("applePoints");
-    if (!applePoints) {
-        applePoints = 10;  // Start with 10 apple points
-        setCookie("applePoints", applePoints, 365);
-    }
-    
-    // Update the apple points display initially
-    applePointsText.textContent = `Apple Points: ${applePoints}`;
+    <!-- Content of your site -->
+    <h1>Welcome to the Apple Points Game</h1>
+    <p id="applePointsText">Apple Points: 10</p>
+    <button id="rollButton">Roll</button>
 
-    // Function to play a sound based on the result
-    function playSound(result) {
-        if (result === 0) {
-            loseSound.play();
-        } else if (result === 1 || result === 3) {
-            okSound.play();
-        } else if (result === 5) {
-            yaySound.play();
-        }
-    }
+    <!-- Add your sounds -->
+    <audio id="roll-sound" src="sounds/roll.mp3"></audio>
+    <audio id="yay-sound" src="sounds/yay.mp3"></audio>
+    <audio id="lose-sound" src="sounds/lose.mp3"></audio>
+    <audio id="ok-sound" src="sounds/ok.mp3"></audio>
 
-    // Handle the roll button click
-    rollButton.addEventListener("click", () => {
-        // Disable the button while the sound plays
-        rollButton.disabled = true;
+    <!-- JavaScript code -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const rollButton = document.getElementById("rollButton");
+            const applePointsText = document.getElementById("applePointsText");
+            const rollSound = document.getElementById("roll-sound");
+            const yaySound = document.getElementById("yay-sound");
+            const loseSound = document.getElementById("lose-sound");
+            const okSound = document.getElementById("ok-sound");
 
-        // Play the roll sound and change the points text to "..."
-        rollSound.play();
-        applePointsText.textContent = "...";
-
-        // Wait for 4 seconds (length of the roll.mp3 sound) before showing the result
-        setTimeout(() => {
-            // Calculate the result
-            const rollResult = rollDice();
-            applePoints += rollResult;
-
-            // Update the apple points and display the result
-            applePointsText.textContent = `Apple Points: ${applePoints}`;
-            
-            // Play the appropriate sound
-            playSound(rollResult);
-
-            // Save the updated apple points to the cookie
-            setCookie("applePoints", applePoints, 365);
-
-            // Re-enable the button
-            rollButton.disabled = false;
-        }, 4000);  // 4 seconds for the roll sound
-    });
-
-    // Roll the dice function
-    function rollDice() {
-        const random = Math.random();
-        if (random < 0.6) return 0;   // 60% chance to get 0 points
-        else if (random < 0.9) return 1;  // 30% chance to get 1 point
-        else if (random < 0.99) return 3; // 10% chance to get 3 points
-        else return 5;                  // 1% chance to get 5 points
-    }
-
-    // Set cookie function to store apple points
-    function setCookie(name, value, days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        const expires = "expires=" + date.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
-    }
-
-    // Get cookie function to retrieve apple points
-    function getCookie(name) {
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-        for (let i = 0; i < cookieArray.length; i++) {
-            let cookie = cookieArray[i].trim();
-            if (cookie.indexOf(name + "=") === 0) {
-                return parseInt(cookie.substring(name.length + 1, cookie.length));
+            // Get cookie data or initialize if not present
+            let applePoints = getCookie("applePoints");
+            if (!applePoints) {
+                applePoints = 10;  // Start with 10 apple points
+                setCookie("applePoints", applePoints, 365);
             }
-        }
-        return null;  // If no cookie is found, return null
-    }
-});
+            
+            // Update the apple points display initially
+            applePointsText.textContent = `Apple Points: ${applePoints}`;
+
+            // Function to play a sound based on the result
+            function playSound(result) {
+                if (result === 0) {
+                    loseSound.play();
+                } else if (result === 1 || result === 3) {
+                    okSound.play();
+                } else if (result === 5) {
+                    yaySound.play();
+                }
+            }
+
+            // Handle the roll button click
+            rollButton.addEventListener("click", () => {
+                // Disable the button while the sound plays
+                rollButton.disabled = true;
+
+                // Play the roll sound and change the points text to "..."
+                rollSound.play();
+                applePointsText.textContent = "...";
+
+                // Wait for 4 seconds (length of the roll.mp3 sound) before showing the result
+                setTimeout(() => {
+                    // Calculate the result
+                    const rollResult = rollDice();
+                    applePoints += rollResult;
+
+                    // Update the apple points and display the result
+                    applePointsText.textContent = `Apple Points: ${applePoints}`;
+                    
+                    // Play the appropriate sound
+                    playSound(rollResult);
+
+                    // Save the updated apple points to the cookie
+                    setCookie("applePoints", applePoints, 365);
+
+                    // Re-enable the button
+                    rollButton.disabled = false;
+                }, 4000);  // 4 seconds for the roll sound
+            });
+
+            // Roll the dice function
+            function rollDice() {
+                const random = Math.random();
+                if (random < 0.6) return 0;   // 60% chance to get 0 points
+                else if (random < 0.9) return 1;  // 30% chance to get 1 point
+                else if (random < 0.99) return 3; // 10% chance to get 3 points
+                else return 5;                  // 1% chance to get 5 points
+            }
+
+            // Set cookie function to store apple points
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
+
+            // Get cookie function to retrieve apple points
+            function getCookie(name) {
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const cookieArray = decodedCookie.split(';');
+                for (let i = 0; i < cookieArray.length; i++) {
+                    let cookie = cookieArray[i].trim();
+                    if (cookie.indexOf(name + "=") === 0) {
+                        return parseInt(cookie.substring(name.length + 1, cookie.length));
+                    }
+                }
+                return null;  // If no cookie is found, return null
+            }
+        });
+    </script>
+</body>
+</html>
+
