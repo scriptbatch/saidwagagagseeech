@@ -125,18 +125,22 @@
                 return; // Stop the function if the user doesn't have points left
             }
 
-            // Add the spinning animation to the button and update text
+            // Add the spinning animation to the button
             const rollButton = document.getElementById('roll-btn');
             rollButton.classList.add('spinning');
-            rollButton.innerText = "..."; // Change text to "..." while rolling
 
-            // Play the roll sound
-            document.getElementById('roll-sound').play();
+            // Change the apple points counter to "..."
+            const pointsText = document.getElementById('points');
+            pointsText.innerText = 'Apple Points: ...'; // Show "..." while the roll is happening
+
+            // Play the roll sound for 4 seconds
+            const rollSound = document.getElementById('roll-sound');
+            rollSound.play();
 
             // Disable the button while the game is processing
             rollButton.disabled = true;
 
-            // Wait 4 seconds (the duration of the roll sound)
+            // Wait for the roll sound to finish (4 seconds)
             setTimeout(() => {
                 // Remove spinning animation
                 rollButton.classList.remove('spinning');
@@ -164,8 +168,7 @@
                 applePoints += pointsWon;
 
                 // Update the display of apple points
-                document.getElementById('points').innerText = `Apple Points: ${applePoints}`;
-                rollButton.innerText = "Spin the Wheel!"; // Reset button text
+                pointsText.innerText = `Apple Points: ${applePoints}`;
             }, 4000); // 4 seconds delay to show the result after the sound finishes
         }
 
