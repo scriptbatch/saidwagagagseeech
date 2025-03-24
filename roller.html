@@ -88,6 +88,13 @@
         <div id="alert-message"></div>
     </div>
 
+    <!-- Audio Elements -->
+    <audio id="yay-sound" src="sound/yay.mp3"></audio>
+    <audio id="lose-sound" src="sound/lose.mp3"></audio>
+    <audio id="ok-sound" src="sound/ok.mp3"></audio>
+    <audio id="ahh-sound" src="sound/ahh.mp3"></audio>
+    <audio id="roll-sound" src="sound/roll.mp3"></audio>
+
     <script>
         // Function to get a cookie value by name
         function getCookie(name) {
@@ -114,33 +121,73 @@
                 applePoints -= 1; // Deduct 1 apple point
             } else {
                 showAlert("You don't have enough apple points to roll!");
+                playSound('lose'); // Play lose sound if not enough points
                 return; // Stop the function if the user doesn't have points left
             }
 
-            // Add the spinning animation to the button
+            // Add the spinning animation to the button and update text
             const rollButton = document.getElementById('roll-btn');
             rollButton.classList.add('spinning');
+            rollButton.innerText = "..."; // Change text to "..." while rolling
+
+            // Play the roll sound
+            document.getElementById('roll-sound').play();
+
+            // Disable the button while the game is processing
+            rollButton.disabled = true;
+
+            // Wait 4 seconds (the duration of the roll sound)
             setTimeout(() => {
+                // Remove spinning animation
                 rollButton.classList.remove('spinning');
-            }, 1000); // Remove spinning effect after 1 second
+                rollButton.disabled = false;
 
-            // Now, simulate the roll to win 0, 1, or 5 points
-            const roll = Math.random(); // Generates a random number between 0 and 1
-            let pointsWon = 0;
+                // Simulate the roll to win 0, 1, or 5 points
+                const roll = Math.random(); // Generates a random number between 0 and 1
+                let pointsWon = 0;
 
-            if (roll < 0.60) {
-                pointsWon = 0;  // 60% chance to get 0 apple points
-            } else if (roll < 0.90) {
-                pointsWon = 1;  // 30% chance to get 1 apple point
-            } else if (roll < 0.99) {
-                pointsWon = 5;  // 10% chance to get 5 apple points
+                if (roll < 0.60) {
+                    pointsWon = 0;  // 60% chance to get 0 apple points
+                    playSound('lose'); // Play lose sound for 0 points
+                } else if (roll < 0.90) {
+                    pointsWon = 1;  // 30% chance to get 1 apple point
+                    playSound('ok'); // Play ok sound for 1 point
+                } else if (roll < 0.99) {
+                    pointsWon = 3;  // 10% chance to get 3 apple points
+                    playSound('ok'); // Play ok sound for 3 points
+                } else {
+                    pointsWon = 5;  // 1% chance to get 5 apple points
+                    playSound('yay'); // Play yay sound for 5 points
+                }
+
+                // Add the points won from the roll
+                applePoints += pointsWon;
+
+                // Update the display of apple points
+                document.getElementById('points').innerText = `Apple Points: ${applePoints}`;
+                rollButton.innerText = "Spin the Wheel!"; // Reset button text
+            }, 4000); // 4 seconds delay to show the result after the sound finishes
+        }
+
+        // Function to play the sound based on the outcome
+        function playSound(outcome) {
+            switch (outcome) {
+                case 'yay':
+                    document.getElementById('yay-sound').play();
+                    break;
+                case 'lose':
+                    document.getElementById('lose-sound').play();
+                    break;
+                case 'ok':
+                    document.getElementById('ok-sound').play();
+                    break;
+                case 'ahh':
+                    document.getElementById('ahh-sound').play();
+                    break;
+                case 'roll':
+                    document.getElementById('roll-sound').play();
+                    break;
             }
-
-            // Add the points won from the roll
-            applePoints += pointsWon;
-
-            // Update the display of apple points
-            document.getElementById('points').innerText = `Apple Points: ${applePoints}`;
         }
 
         // Show alert messages
