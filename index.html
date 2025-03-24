@@ -8,10 +8,12 @@
 </head>
 <body>
 
-    <!-- Content of your site -->
-    <h1>Welcome to the Apple Points Game</h1>
-    <p id="applePointsText">Apple Points: 10</p>
-    <button id="rollButton">Roll</button>
+    <div class="game-container">
+        <!-- Casino styled content -->
+        <h1>Welcome to the Apple Points Casino</h1>
+        <p id="applePointsText">Apple Points: 10</p>
+        <button id="rollButton">Roll</button>
+    </div>
 
     <!-- Add your sounds -->
     <audio id="roll-sound" src="sounds/roll.mp3"></audio>
@@ -35,7 +37,7 @@
                 applePoints = 10;  // Start with 10 apple points
                 setCookie("applePoints", applePoints, 365);
             }
-            
+
             // Update the apple points display initially
             applePointsText.textContent = `Apple Points: ${applePoints}`;
 
@@ -52,22 +54,33 @@
 
             // Handle the roll button click
             rollButton.addEventListener("click", () => {
+                // Check if the player has enough points to roll
+                if (applePoints <= 0) {
+                    alert("You don't have enough apple points to roll!");
+                    return; // Prevent further action if no apple points left
+                }
+
+                // Deduct 1 apple point for rolling
+                applePoints -= 1;
+
                 // Disable the button while the sound plays
                 rollButton.disabled = true;
 
                 // Play the roll sound and change the points text to "..."
                 rollSound.play();
                 applePointsText.textContent = "...";
+                applePointsText.classList.add("loading"); // Add loading effect
 
                 // Wait for 4 seconds (length of the roll.mp3 sound) before showing the result
                 setTimeout(() => {
                     // Calculate the result
                     const rollResult = rollDice();
-                    applePoints += rollResult;
+                    applePoints += rollResult; // Add the result to apple points
 
                     // Update the apple points and display the result
                     applePointsText.textContent = `Apple Points: ${applePoints}`;
-                    
+                    applePointsText.classList.remove("loading"); // Remove loading effect
+
                     // Play the appropriate sound
                     playSound(rollResult);
 
