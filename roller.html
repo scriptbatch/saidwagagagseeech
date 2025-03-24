@@ -1,9 +1,9 @@
-<!-- roller.html -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roller Game</title>
+    <title>Casino Roller Game</title>
     <style>
         /* Basic Styling */
         body {
@@ -96,29 +96,44 @@
     <audio id="roll-sound" src="sound/roll.mp3"></audio>
 
     <script>
-        // Function to get a cookie value by name
+        // Function to get a cookie by name
         function getCookie(name) {
             let value = `; ${document.cookie}`;
             let parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
-        // Check if user is logged in (cookie exists)
-        const user = getCookie("user");
-        if (!user) {
-            alert("You must be logged in to play!");
-            window.location.href = 'login.html'; // Redirect to login if not logged in
+        // Function to set a cookie
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = `expires=${date.toUTCString()}`;
+            document.cookie = `${name}=${value}; ${expires}; path=/`;
         }
 
-        // Initial apple points
-        let applePoints = 10;
-        document.getElementById('points').innerText = `Apple Points: ${applePoints}`;
+        // Check if the user has an existing cookie, otherwise create one
+        let userData = getCookie('userData');
+        if (!userData) {
+            // Create default data if no cookie exists
+            const defaultUserData = {
+                username: 'User' + Math.floor(Math.random() * 10000),
+                applePoints: 10
+            };
+            setCookie('userData', JSON.stringify(defaultUserData), 365); // Store for 1 year
+            userData = JSON.stringify(defaultUserData);
+        }
+
+        // Parse the stored cookie data
+        userData = JSON.parse(userData);
+
+        // Display the username and apple points
+        document.getElementById('points').innerText = `Apple Points: ${userData.applePoints}`;
 
         // Function to simulate rolling for apple points
         function rollForPoints() {
             // First, lose 1 apple point when the user clicks "Roll"
-            if (applePoints > 0) {
-                applePoints -= 1; // Deduct 1 apple point
+            if (userData.applePoints > 0) {
+                userData.applePoints -= 1; // Deduct 1 apple point
             } else {
                 showAlert("You don't have enough apple points to roll!");
                 playSound('lose'); // Play lose sound if not enough points
@@ -165,10 +180,13 @@
                 }
 
                 // Add the points won from the roll
-                applePoints += pointsWon;
+                userData.applePoints += pointsWon;
 
                 // Update the display of apple points
-                pointsText.innerText = `Apple Points: ${applePoints}`;
+                pointsText.innerText = `Apple Points: ${userData.applePoints}`;
+
+                // Update the cookie with the new data
+                setCookie('userData', JSON.stringify(userData), 365);
             }, 4000); // 4 seconds delay to show the result after the sound finishes
         }
 
@@ -207,6 +225,13 @@
 
         // Add event listener to roll button
         document.getElementById('roll-btn').addEventListener('click', rollForPoints);
+
+        // Update apple points every 5 seconds
+        setInterval(() => {
+            userData.applePoints += 1; // Increment points every 5 seconds
+            setCookie('userData', JSON.stringify(userData), 365); // Update cookie
+            document.getElementById('points').innerText = `Apple Points: ${userData.applePoints}`;
+        }, 5000);
     </script>
 </body>
 </html>
