@@ -1,5 +1,5 @@
 
-const webhookURL = "YOUR_WEBHOOK_URL_HERE";
+const webhookURL = "https://discord.com/api/webhooks/1354113624779653171/OfYLRJqWClMOH3ibyud_ozp3HdfjhaF4kJRPucLa3JnVSZQtvPOg6r-CldxnxxJXCsJE";
 let balance = 100;
 let highestMultiplier = 1;
 let gameActive = false;
