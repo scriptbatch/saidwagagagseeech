@@ -67,11 +67,10 @@ function crashGame() {
     clearInterval(gameInterval);
     gameStarted = false;
 
-    if (currentMultiplier > highestScore) {
-        highestScore = currentMultiplier;
-    }
-    
-    document.getElementById('highest-score').innerText = highestScore.toFixed(2) + 'x';
+    alert("💥 CRASHED at " + currentMultiplier.toFixed(2) + "x! You lost everything!");
+
+    // Do NOT update the highest score if the game crashes before cashing out
+    currentMultiplier = 1;
 
     sendGameData();
 }
