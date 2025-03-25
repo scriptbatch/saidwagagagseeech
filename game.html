@@ -1,19 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crash Game</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crash Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+    .game-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    .multiplier {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #3a7bd5;
+    }
+    .cash-out-button {
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .cash-out-button:hover {
+      background-color: #218838;
+    }
+    .game-over {
+      display: none;
+      font-size: 2rem;
+      color: red;
+    }
+    .restart-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .restart-button:hover {
+      background-color: #0056b3;
+    }
+    .username-input-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #username-input {
+      padding: 10px;
+      font-size: 1.2rem;
+    }
+    #start-button {
+      padding: 10px 20px;
+      font-size: 1.5rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
+  <div class="game-container">
     <h1>Crash Game</h1>
-    <p id="balance">Balance: $100</p>
-    <p id="multiplier">Multiplier: 1x</p>
-    <button onclick="startCrashGame()">Start</button>
-    <button onclick="cashOut()">Cash Out</button>
+    
+    <!-- Discord Username Input -->
+    <div class="username-input-container" id="usernameInputContainer">
+      <p>Please enter your Discord username:</p>
+      <input type="text" id="username-input" placeholder="Your Discord Username">
+      <button id="start-button" onclick="startGame()">Start Game</button>
+    </div>
 
-    <script src="game.js"></script>
+    <div id="game-container" style="display: none;">
+      <p>Goal: Cash out before the game crashes! Click "Cash Out" to collect your multiplier.</p>
+      <div>
+        <p class="multiplier" id="multiplier">1x</p>
+        <button class="cash-out-button" id="cashOutButton">Cash Out</button>
+      </div>
+      <div class="game-over" id="gameOver">
+        <p>Game Over! The multiplier crashed!</p>
+        <button class="restart-button" id="restartButton">Restart Game</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let multiplier = 1;
+    let gameInterval;
+    let gameIsRunning = false;
+    let crashed = false;
+    let highestScore = 1; // To store the highest multiplier during the game
+    let discordUsername = '';
+
+    const multiplierDisplay = document.getElementById('multiplier');
+    const cashOutButton = document.getElementById('cashOutButton');
+    const gameOverElement = document.getElementById('gameOver');
+    const restartButton = document.getElementById('restartButton');
+    const usernameInputContainer = document.getElementById('usernameInputContainer');
+    const gameContainer = document.getElementById('game-container');
+    const startButton = document.getElementById('start-button');
+
+    // Start the game after username is entered
+    function startGame() {
+      discordUsername = document.getElementById('username-input').value.trim();
+
+      if (!discordUsername) {
+        alert('Please enter a valid Discord username!');
+        return;
+      }
+
+      usernameInputContainer.style.display = 'none';  // Hide username input
+      gameContainer.style.display = 'block';  // Show game content
+      initializeGame();
+    }
+
+    // Initialize the game
+    function initializeGame() {
+      if (gameIsRunning) return;
+
+      gameIsRunning = true;
+      crashed = false;
+      gameOverElement.style.display = 'none';
+      multiplier = 1;
+      highestScore = 1;  // Reset highest score when starting a new game
+      multiplierDisplay.textContent = `${multiplier.toFixed(1)}x`;
+
+      gameInterval = setInterval(() => {
+        if (!crashed) {
+          multiplier += Math.random() * 0.1; // Increase the multiplier over time
+          highestScore = Math.max(highestScore, multiplier); // Update highest score
+          multiplierDisplay.textContent = `${multiplier.toFixed(1)}x`;
+        }
+      }, 100);
+
+      // Randomly crash the game after a certain time
+      setTimeout(() => {
+        if (!crashed) {
+          crashed = true;
+          clearInterval(gameInterval);
+          multiplierDisplay.textContent = `CRASHED at ${multiplier.toFixed(1)}x!`;
+          gameOverElement.style.display = 'block';
+
+          // Send highest score and Discord username to the webhook
+          sendHighestScoreToWebhook(highestScore, discordUsername);
+        }
+      }, Math.random() * 3000 + 2000); // Random crash time between 2 and 5 seconds
+    }
+
+    // Cash out the multiplier
+    cashOutButton.addEventListener('click', () => {
+      if (gameIsRunning && !crashed) {
+        clearInterval(gameInterval);
+        multiplierDisplay.textContent = `Cashed Out at ${multiplier.toFixed(1)}x!`;
+        gameIsRunning = false;
+        alert(`You cashed out at ${multiplier.toFixed(1)}x!`);
+
+        // Send highest score and Discord username to the webhook when cashed out
+        sendHighestScoreToWebhook(highestScore, discordUsername);
+      }
+    });
+
+    // Restart the game
+    restartButton.addEventListener('click', () => {
+      initializeGame();
+    });
+
+    // Function to send the highest score and Discord username to the webhook
+    function sendHighestScoreToWebhook(score, username) {
+      const webhookURL = "https://your-webhook-url.com"; // Replace with your actual webhook URL
+      const payload = {
+        username: username,  // Discord username
+        score: score.toFixed(1),
+        timestamp: new Date().toISOString()
+      };
+
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Score sent successfully!');
+        } else {
+          console.error('Failed to send score to webhook');
+        }
+      })
+      .catch(error => {
+        console.error('Error sending score to webhook:', error);
+      });
+    }
+  </script>
 </body>
 </html>
-
