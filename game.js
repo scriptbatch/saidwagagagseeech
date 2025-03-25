@@ -80,7 +80,7 @@ function crashGame() {
     document.getElementById('highest-score').innerText = highestScore.toFixed(2) + 'x';
 
     // Reset multiplier
-    currentMultiplier = 1;  
+    currentMultiplier = 0;  
     sendGameData();
 }
 
