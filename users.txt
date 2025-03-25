@@ -1,6 +1,0 @@
-user123:10
-user456:5
-user789:20
-salamiowner:30
-User5673:30
-txjP1RurTFKG:30
