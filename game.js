@@ -1,4 +1,4 @@
-// Ensure functions are globally accessible
+// Ensure functions are globally available
 window.startGame = startGame;
 window.cashOut = cashOut;
 
@@ -107,3 +107,4 @@ function sendGameData() {
     document.getElementById('user-score').innerText = data.username;
     document.getElementById('score').innerText = data.score + 'x';
 }
+
