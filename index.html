@@ -4,53 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Verification</title>
-  <script src="js/verify.js"></script> <!-- JavaScript file for cookie handling -->
-  <link rel="stylesheet" href="css/style.css"> <!-- Optional for styling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    #cookie-input-container {
+      margin-top: 20px;
+    }
+    #cookie-input {
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    #submit-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #submit-button:hover {
+      background-color: #218838;
+    }
+    #form-link {
+      margin-top: 20px;
+      font-size: 1.1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to My Game!</h1>
-  <p>To access the game, you need to complete the payment verification process.</p>
-
-  <div id="payment-options">
-    <!-- Option to pay via a link -->
-    <p><strong>Option 1:</strong> Pay through the link below:</p>
-    <p><a href="YOUR_PAYMENT_LINK_HERE" target="_blank">Pay via Link</a></p>
-    <p><small>After paying, please provide proof through the Google Form.</small></p>
-    <p><small>You will be manually verified and then given access.</small></p>
-
-    <!-- OR -->
-    <p><strong>Option 2:</strong> If you already paid and have the verification cookie, enter it below:</p>
-    <label for="cookie-input">Enter your one-time cookie:</label>
-    <input type="text" id="cookie-input" placeholder="Enter Cookie">
-    <button onclick="verifyCookie()">Submit Cookie</button>
+  <h1>Welcome to the Game!</h1>
+  <p>To access the game, you need to verify your payment.</p>
+  <p>Pay and send proof to this form to get verified:</p>
+  <p><a href="https://your-google-form-link" target="_blank">[Form Link]</a></p>
+  
+  <div id="cookie-input-container">
+    <label for="cookie-input">Enter your verification cookie:</label>
+    <input type="text" id="cookie-input" placeholder="Enter your cookie">
+    <button id="submit-button" onclick="verifyCookie()">Submit Cookie</button>
   </div>
 
   <script>
-    // Function to verify the one-time cookie entered by the user
     async function verifyCookie() {
       const userCookie = document.getElementById('cookie-input').value.trim();
 
-      // Fetch the cookies from the GitHub repository
+      // Fetch the cookies from the GitHub repository (raw URL for the file)
       const cookiesList = await fetch('https://raw.githubusercontent.com/yourusername/your-repository/main/cookies.txt')
         .then(response => response.text())
         .then(text => text.split('\n').map(line => line.trim())) // Split the file into an array of cookies
 
-      // Check if the user entered cookie is valid
+      // Check if the user-entered cookie exists in the list of valid cookies
       if (cookiesList.includes(userCookie)) {
-        setVerifiedCookie();
+        alert("Cookie valid! Redirecting to the game...");
         window.location.href = "game.html"; // Redirect to the game page
       } else {
-        alert("Invalid cookie. Please complete the payment verification.");
+        alert("Invalid cookie. Please try again.");
       }
-    }
-
-    // Function to set the verified cookie in the browser
-    function setVerifiedCookie() {
-      const date = new Date();
-      date.setTime(date.getTime() + (24 * 60 * 60 * 1000)); // Cookie expires in 1 day
-      document.cookie = "user_verified=true; expires=" + date.toUTCString() + "; path=/";
-      alert("You're verified! Enjoy the game.");
     }
   </script>
 </body>
 </html>
+
