@@ -13,6 +13,17 @@ function getRandomCrashPoint() {
     ];
     return ranges[Math.floor(Math.random() * ranges.length)]; // Pick one of the two ranges
 }
+function increaseMultiplier() {
+    if (gameStarted) {
+        currentMultiplier += 0.01;
+        document.getElementById('multiplier').innerText = currentMultiplier.toFixed(2) + 'x';
+
+        // Crash when reaching the randomly chosen crash point
+        if (currentMultiplier >= crashPoint) {
+            crashGame();
+        }
+    }
+}
 
 // Start the game after entering Discord username
 function startGame() {
@@ -40,7 +51,7 @@ function startGame() {
     music.play().catch(error => console.log("🎵 Audio playback error:", error));
 
     gameInterval = setInterval(increaseMultiplier, 100);
-}
+   }
 
 // Cash out before crash
 function cashOut() {
