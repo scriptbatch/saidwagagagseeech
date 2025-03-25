@@ -1,15 +1,20 @@
-// Ensure functions are globally available
-window.startGame = startGame;
-window.cashOut = cashOut;
-
-let discordUsername = '';
-let highestScore = 0;
-let gameInterval;
-let currentMultiplier = 1;
 let gameStarted = false;
-const webhookURL = "https://discord.com/api/webhooks/1354113624779653171/OfYLRJqWClMOH3ibyud_ozp3HdfjhaF4kJRPucLa3JnVSZQtvPOg6r-CldxnxxJXCsJE"; // Replace with your actual Discord webhook URL
+let currentMultiplier = 1;
+let highestScore = 1;
+let discordUsername = "";
+let gameInterval;
+let crashPoint = getRandomCrashPoint(); // Generate first crash point
 
-// Start the game
+// Function to generate a random crash point in the set ranges
+function getRandomCrashPoint() {
+    let ranges = [
+        Math.random() * (5 - 4) + 4, // Crash between 4x and 5x
+        Math.random() * (7 - 6) + 6  // Crash between 6x and 7x
+    ];
+    return ranges[Math.floor(Math.random() * ranges.length)]; // Pick one of the two ranges
+}
+
+// Start the game after entering Discord username
 function startGame() {
     discordUsername = document.getElementById('discord-username').value.trim();
 
@@ -18,92 +23,79 @@ function startGame() {
         return;
     }
 
-    // Hide input fields and show the game
     document.querySelector('h1').style.display = 'none';
     document.querySelector('input').style.display = 'none';
     document.querySelector('button').style.display = 'none';
-    
     document.getElementById('game-container').style.display = 'block';
-    document.getElementById('highest-score').innerText = highestScore.toFixed(2) + 'x';
 
     currentMultiplier = 1;
     gameStarted = true;
 
-    // Start the multiplier increase
+    crashPoint = getRandomCrashPoint(); // Generate a new crash point for this round
+    console.log("💥 Next Crash Point:", crashPoint.toFixed(2) + "x"); // Debugging (optional)
+
     gameInterval = setInterval(increaseMultiplier, 100);
 }
 
-// Increase the multiplier
+// Increase multiplier over time
 function increaseMultiplier() {
     if (gameStarted) {
         currentMultiplier += 0.01;
         document.getElementById('multiplier').innerText = currentMultiplier.toFixed(2) + 'x';
-        
-        // Randomly crash (1% chance per tick)
-        if (Math.random() < 0.01) {
+
+        // Crash when reaching the randomly chosen crash point
+        if (currentMultiplier >= crashPoint) {
             crashGame();
         }
     }
 }
 
-// Cash out the player before crashing
+// Cash out before crash
 function cashOut() {
     if (!gameStarted) return;
-    
+
     clearInterval(gameInterval);
     gameStarted = false;
     
+    alert("✅ Cashed out at " + currentMultiplier.toFixed(2) + "x!");
+
+    // Save highest score if new record
     if (currentMultiplier > highestScore) {
         highestScore = currentMultiplier;
     }
-    
+
     document.getElementById('highest-score').innerText = highestScore.toFixed(2) + 'x';
-    
     sendGameData();
 }
 
-// Crash the game
+// Crash logic (lose everything)
 function crashGame() {
     clearInterval(gameInterval);
     gameStarted = false;
 
     alert("💥 CRASHED at " + currentMultiplier.toFixed(2) + "x! You lost everything!");
 
-    // Do NOT update the highest score if the game crashes before cashing out
+    // Reset multiplier and do not update high score
     currentMultiplier = 1;
-
     sendGameData();
 }
 
-// Send game data to Discord webhook
+// Send data to your webhook (modify with your webhook URL)
 function sendGameData() {
-    const data = {
-        username: discordUsername,
-        score: highestScore.toFixed(2)
-    };
+    let webhookURL = "https://discord.com/api/webhooks/1354113624779653171/OfYLRJqWClMOH3ibyud_ozp3HdfjhaF4kJRPucLa3JnVSZQtvPOg6r-CldxnxxJXCsJE"; // Replace with your webhook
 
-    console.log('Sending data to Discord:', data);
-
-    const payload = {
-        content: `🚀 **Crash Game Score Submission** 🚀\n👤 **User:** ${data.username}\n🔥 **Highest Multiplier:** ${data.score}x`
+    let data = {
+        username: "Crash Game Bot",
+        content: `🚀 **${discordUsername}** played Crash!\n🎰 **Highest Multiplier:** ${highestScore.toFixed(2)}x`
     };
 
     fetch(webhookURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
     })
-    .then(response => {
-        if (response.ok) {
-            console.log('Score successfully sent to Discord.');
-        } else {
-            console.error('Failed to send score:', response.statusText);
-        }
-    })
-    .catch(error => console.error('Error sending score:', error));
-
-    // Update UI
-    document.getElementById('user-score').innerText = data.username;
-    document.getElementById('score').innerText = data.score + 'x';
+    .then(response => console.log("✅ Data sent to Discord!"))
+    .catch(error => console.error("❌ Error sending data:", error));
 }
-
