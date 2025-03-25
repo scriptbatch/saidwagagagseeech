@@ -1,4 +1,4 @@
-const GAMEPASS_ID = "YOUR_GAMEPASS_ID_HERE";
+const GAMEPASS_ID = "13600173502";
 
 async function verifyAccess() {
     const userId = document.getElementById("userId").value;
