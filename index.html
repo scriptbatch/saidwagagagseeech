@@ -1,18 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Gamepass</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Verification</title>
+  <script src="js/verify.js"></script> <!-- JavaScript file for cookie handling -->
+  <link rel="stylesheet" href="css/style.css"> <!-- Optional for styling -->
 </head>
 <body>
-    <h1>Crash Game Access</h1>
-    <p>Enter your **Roblox User ID** to verify gamepass ownership:</p>
-    <input type="text" id="userId" placeholder="Enter your Roblox ID">
-    <button onclick="verifyAccess()">Verify</button>
-    <p id="message"></p>
+  <h1>Welcome to My Game!</h1>
+  <p>To access the game, you need to complete the payment verification process.</p>
 
-    <script src="verify.js"></script>
+  <div id="payment-options">
+    <!-- Option to pay via a link -->
+    <p><strong>Option 1:</strong> Pay through the link below:</p>
+    <p><a href="YOUR_PAYMENT_LINK_HERE" target="_blank">Pay via Link</a></p>
+    <p><small>After paying, please provide proof through the Google Form.</small></p>
+    <p><small>You will be manually verified and then given access.</small></p>
+
+    <!-- OR -->
+    <p><strong>Option 2:</strong> If you already paid and have the verification cookie, enter it below:</p>
+    <label for="cookie-input">Enter your one-time cookie:</label>
+    <input type="text" id="cookie-input" placeholder="Enter Cookie">
+    <button onclick="verifyCookie()">Submit Cookie</button>
+  </div>
+
+  <script>
+    // Function to verify the one-time cookie entered by the user
+    async function verifyCookie() {
+      const userCookie = document.getElementById('cookie-input').value.trim();
+
+      // Fetch the cookies from the GitHub repository
+      const cookiesList = await fetch('https://raw.githubusercontent.com/yourusername/your-repository/main/cookies.txt')
+        .then(response => response.text())
+        .then(text => text.split('\n').map(line => line.trim())) // Split the file into an array of cookies
+
+      // Check if the user entered cookie is valid
+      if (cookiesList.includes(userCookie)) {
+        setVerifiedCookie();
+        window.location.href = "game.html"; // Redirect to the game page
+      } else {
+        alert("Invalid cookie. Please complete the payment verification.");
+      }
+    }
+
+    // Function to set the verified cookie in the browser
+    function setVerifiedCookie() {
+      const date = new Date();
+      date.setTime(date.getTime() + (24 * 60 * 60 * 1000)); // Cookie expires in 1 day
+      document.cookie = "user_verified=true; expires=" + date.toUTCString() + "; path=/";
+      alert("You're verified! Enjoy the game.");
+    }
+  </script>
 </body>
 </html>
