@@ -75,10 +75,15 @@ function crashGame() {
 
     alert("💥 CRASHED at " + currentMultiplier.toFixed(2) + "x! You lost everything!");
 
-    // Reset multiplier and do not update high score
-    currentMultiplier = 1;
+    // Reset the highest score to 0.00 if the player crashes
+    highestScore = 0; 
+    document.getElementById('highest-score').innerText = highestScore.toFixed(2) + 'x';
+
+    // Reset multiplier
+    currentMultiplier = 1;  
     sendGameData();
 }
+
 
 // Send data to your webhook (modify with your webhook URL)
 function sendGameData() {
