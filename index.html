@@ -57,7 +57,7 @@
       const userCookie = document.getElementById('cookie-input').value.trim();
 
       // Fetch the cookies from the GitHub repository (raw URL for the file)
-      const cookiesList = await fetch('https://raw.githubusercontent.com/yourusername/your-repository/main/cookies.txt')
+      const cookiesList = await fetch('https://github.com/scriptbatch/saidwagagagseeech/raw/main/cookies.txt')
         .then(response => response.text())
         .then(text => text.split('\n').map(line => line.trim())) // Split the file into an array of cookies
 
