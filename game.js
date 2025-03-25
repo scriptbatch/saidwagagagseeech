@@ -31,23 +31,15 @@ function startGame() {
     currentMultiplier = 1;
     gameStarted = true;
 
-    crashPoint = getRandomCrashPoint(); // Generate a new crash point for this round
-    console.log("💥 Next Crash Point:", crashPoint.toFixed(2) + "x"); // Debugging (optional)
+    crashPoint = getRandomCrashPoint(); // Generate a new crash point
+    console.log("💥 Next Crash Point:", crashPoint.toFixed(2) + "x");
+
+    // 🎵 Play background music
+    let music = document.getElementById('background-music');
+    music.volume = 0.5; // Set volume (0.0 to 1.0)
+    music.play().catch(error => console.log("🎵 Audio playback error:", error));
 
     gameInterval = setInterval(increaseMultiplier, 100);
-}
-
-// Increase multiplier over time
-function increaseMultiplier() {
-    if (gameStarted) {
-        currentMultiplier += 0.01;
-        document.getElementById('multiplier').innerText = currentMultiplier.toFixed(2) + 'x';
-
-        // Crash when reaching the randomly chosen crash point
-        if (currentMultiplier >= crashPoint) {
-            crashGame();
-        }
-    }
 }
 
 // Cash out before crash
