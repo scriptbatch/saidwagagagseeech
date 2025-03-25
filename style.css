@@ -1,86 +1,15 @@
-/* General page styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #111; /* Dark background */
-    color: white;
+    font-family: Arial, sans-serif;
     text-align: center;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    font-size: 3rem;
-    color: red;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-    margin-top: 50px;
-}
-
-/* Apple Points text */
-#applePointsText {
-    font-size: 2rem;
     margin: 20px;
-    color: #FFD700; /* Gold color */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-/* Roll button */
-#rollButton {
-    background-color: #E60000; /* Red background */
-    color: white;
-    font-size: 1.5rem;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 5px;
+input, button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#rollButton:hover {
-    background-color: #FF1A1A; /* Lighter red when hovered */
-}
-
-/* Adding a bit of flair for the game container */
-.game-container {
-    background-color: #222;
-    border-radius: 15px;
-    padding: 30px;
-    margin: 50px auto;
-    width: 400px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
-}
-
-/* Style for the sounds section */
-audio {
-    display: none;
-}
-
-/* Add a glowing effect to the "..." text */
-#applePointsText.loading {
-    color: #00FF00; /* Greenish color */
-    animation: glow 1s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    0% {
-        text-shadow: 0 0 5px green, 0 0 10px green;
-    }
-    100% {
-        text-shadow: 0 0 20px lime, 0 0 30px lime;
-    }
-}
-
-/* For mobile responsiveness */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 2rem;
-    }
-
-    #applePointsText {
-        font-size: 1.5rem;
-    }
-
-    #rollButton {
-        font-size: 1.2rem;
-        padding: 12px 25px;
-    }
 }
