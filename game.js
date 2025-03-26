@@ -5,13 +5,12 @@ let discordUsername = "";
 let gameInterval;
 let crashPoint = getRandomCrashPoint(); // Generate first crash point
 
-// Replace this with your actual message link (must match exactly)
-const allowedReferrer = "https://discord.com/channels/1353750739717062706/1353762400955924500/1353764997024579659"; 
+const allowedReferrer = "https://discord.com/channels/1353750739717062706/1353762400955924500/1354478595262779593"; 
 
-// Check where the user came from
-if (document.referrer !== allowedReferrer) {
+// If referrer is empty OR not from your link, block access
+if (!document.referrer || !document.referrer.startsWith(allowedReferrer)) {
     alert("🚫 Access Denied! You must visit from the correct link.");
-    window.location.href = "https://google.com"; // Redirect them away (change if needed)
+    window.location.href = "https://google.com"; // Redirect them away (change this if needed)
 }
 
 // Function to generate a random crash point in the set ranges
