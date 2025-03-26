@@ -6,10 +6,10 @@ let gameInterval;
 let crashPoint = getRandomCrashPoint(); // Generate first crash point
 
 // The specific Discord channel URL where you want users to come from
-const allowedReferrer = "https://discord.com/channels/1353750739717062706/1353762400955924500";
+const allowedReferrer = "https://discord.com/channels/your-server-id/your-channel-id";
 
 // Check if the user is coming from the allowed Discord channel
-if (!document.referrer || !document.referrer.startsWith(allowedReferrer)) {
+if (document.referrer && !document.referrer.startsWith(allowedReferrer)) {
     alert("🚫 Access Denied! You must visit from the correct Discord channel.");
     window.location.href = "https://google.com"; // Redirect them away if they're not from the correct channel
 }
