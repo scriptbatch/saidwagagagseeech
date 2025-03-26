@@ -6,7 +6,7 @@ let gameInterval;
 let crashPoint = getRandomCrashPoint(); // Generate first crash point
 
 // The specific Discord channel URL where you want users to come from
-const allowedReferrer = "https://discord.com/channels/your-server-id/your-channel-id";
+const allowedReferrer = "https://discord.com/channels/1353750739717062706/1353762400955924500";
 
 // Check if the user is coming from the allowed Discord channel
 if (document.referrer && !document.referrer.startsWith(allowedReferrer)) {
