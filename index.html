@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crash Game 🎰</title>
-    <link rel="stylesheet" href="style.css"> <!-- ✅ This links the CSS -->
+    <title>My IP Address</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        #ip { font-size: 24px; font-weight: bold; }
+    </style>
 </head>
 <body>
+    <h1>Your IP Address is:</h1>
+    <p id="ip">Loading...</p>
 
-<audio id="background-music" loop>
-    <source src="casino-music.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-</audio>
-
-    <h1>🔥 Welcome to Crash! 🔥</h1>
-    <input type="text" id="discord-username" placeholder="Enter your Discord Username">
-    <button onclick="startGame()">Start Game</button>
-
-    <div id="game-container">
-        <h2>Multiplier: <span id="multiplier">1.00x</span></h2>
-        <button onclick="cashOut()">Cash Out</button>
-        <h3>🔥 Highest Multiplier: <span id="highest-score">1.00x</span></h3>
-    </div>
-
-    <script src="game.js"></script>
+    <script>
+        fetch('https://api64.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip').textContent = data.ip;
+            })
+            .catch(error => {
+                document.getElementById('ip').textContent = "Error fetching IP";
+                console.error('Error:', error);
+            });
+    </script>
 </body>
 </html>
-
